@@ -3,13 +3,13 @@
 - TCP/IP Protocol based REST service
 - 4 operations
 - **Create**
-- method: post
+  - method: post
 - **Read**
-- method: get
+  - method: get
 - **Update**
-- method: put/patch
+  - method: put/patch
 - **Delete**
-- method: delete
+  - method: delete
 
 ## SOLID Principle of Software Development
 
@@ -27,12 +27,12 @@
 ## MVC Pattern (Model-View-Controller)
 
 - Model
-- Database or data source
-- Business logic implementation
+  - Database or data source
+  - Business logic implementation
 - View
-- HTML,CSS,Design
+  - HTML,CSS,Design
 - Controller
-- Data flow and router handling
+  - Data flow and router handling
 
 ## 3-Tire Architecture(Data layer,Logical/controlling/business layer,View layer)
 
@@ -99,3 +99,17 @@
         - Details with products (/category/:slug/by-slug)
       - Update Brand By Id (Put)
       - Delete Brand By Id (Delete)
+
+## Middleware
+- Types:
+  - Application level Middleware
+    - Those routes mount in express app 
+  - Routing level middleware
+    - Those external routes which canot execute directly and has to be mount in app.use method
+  - Global middleware  
+    - Ex: routes not found err handle ko lagi
+  - Error handling/Garbage Collector middleware
+    - mount above the export of app 
+
+note: data send by client is received by three way:form-data,raw,urlencoded
+      raw data is parsed first through express middleware(express.json(),express.urlencoded()) which then populate req.body and server can receive data in form of javascript object    

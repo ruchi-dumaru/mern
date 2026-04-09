@@ -7,9 +7,15 @@
 
 
 class AuthController{
- registerUser=(req, res) => {
+  
+ registerUser=(req, res,next) => {
+  const data=req.body
+  //logic
+  //db store
+
+  // next({code:400,message:"User not registered",status:"Not registered"})
   res.status(201).json({
-    description: "",
+   data:data,
     message: "User registered succesfully",
     status: "OK",
   });
@@ -38,9 +44,23 @@ loginUser=(req,res)=>{
 }
 
 getLoggedInUser=(req,res)=>{
+  // Is the user logged In  ?
+   //success=> response
+     //failure=>error msg
   res.json({
     data:{},
     message:"Fetch logged In User",
+    status:"OK"
+  })
+}
+
+updateUserProfile=(req,res)=>{
+  // Is the user logged In  ?
+   //success=> response
+     //failure=>error msg
+  res.json({
+    data:{},
+    message:"Can Update Profile",
     status:"OK"
   })
 }
