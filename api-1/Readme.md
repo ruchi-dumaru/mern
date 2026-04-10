@@ -112,4 +112,7 @@
     - mount above the export of app 
 
 note: data send by client is received by three way:form-data,raw,urlencoded
-      raw data is parsed first through express middleware(express.json(),express.urlencoded()) which then populate req.body and server can receive data in form of javascript object    
+      raw data is parsed first through express middleware(express.json(),express.urlencoded()) which then populate req.body and server can receive data in form of javascript object
+
+    : we receive data from client , now we have to validate those data how? 
+      by building custom middleware         
