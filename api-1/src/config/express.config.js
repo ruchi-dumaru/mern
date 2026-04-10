@@ -25,6 +25,7 @@ app.use((req,res,next)=>{
  next({code:404,message:"Not found",status:"NOT_FOUND_ERR"})
 })
 
+
 //error handling middleware
 app.use(errorHandler)
 module.exports = app;
