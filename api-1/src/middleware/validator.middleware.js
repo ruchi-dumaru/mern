@@ -23,6 +23,7 @@ const bodyValidator = (rules) => {
 
       if(exception.details){
         exception.details.map((error)=>{
+          console.log(error)
           let key=error.path[0];
        errBag[key]=error.message //this populate errBag
         })

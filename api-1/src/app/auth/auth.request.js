@@ -1,11 +1,18 @@
 const Joi=require('joi');
+const roleRegex=/^(seller|customer)$/;
+const passwordRegex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])(?=.*[\W_]).{8,25}$/;
+
 //rules for data validation
 const registerDTO = Joi.object({
   name:Joi.string().min(3).max(30).required(),
   email:Joi.string().email().required(),
-  password:Joi.string().required(),
+  password:Joi.string().regex(passwordRegex).required().messages({
+    "string.pattern.base":"Password must be strong"
+  }),
   confirmPassword:Joi.ref('password'),
-  role:Joi.string().allow('seller','customer').default('customer')
+  role:Joi.string().regex(roleRegex).default('customer').messages({
+    "string.pattern.base":"Role must be either 'seller'or'customer'"
+  })
   
 },
 )
