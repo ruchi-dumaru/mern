@@ -1,10 +1,10 @@
-//user registration
-//http://localhost:9001/api/v1/auth/register/
 
-//account activation
 //dynamic or paramaterized router
 //http://localhost:9001/api/v1/auth/activate/9891gdfnb3$$
 
+const bcrypt=require('bcryptjs')
+const { Status } = require('../../config/constant.config')
+const { generateRandomString } = require('../../utilities/helper')
 
 class AuthController{
   
@@ -13,7 +13,20 @@ class AuthController{
   //logic
   //db store
 
-  // next({code:400,message:"User not registered",status:"Not registered"})
+  //encrypt
+  data.password=bcrypt.hashSync(data.password,12)
+
+  //active status
+  //access token
+   data.status=Status.INACTIVE
+
+   //activation token
+
+   data.activationToken=generateRandomString()
+
+   //data store  in db
+   //email for activation
+
   res.status(201).json({
    data:data,
     message: "User registered succesfully",
