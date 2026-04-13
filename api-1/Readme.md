@@ -123,3 +123,45 @@ note: data send by client is received by three way:form-data,raw,urlencoded
 
  - NoSQL database(Not only SQL)
   - (MongoDB,cassandra,couchdb,auzre,(server)) 
+
+ - WE USE PACKAGE(ORM,ODM) IN DB.IT PROVIDE:
+    - Data structure
+    - Model definition (imp)
+    - Data Types
+    - Function and Functionality 
+
+### Mongodb Access 
+ #### Admin Atlas
+   - username:ruchidumarudev
+   - pwd:
+ #### DB access (mern-12,api-12)
+   -  username:mernDev-12
+   -  pwd:    
+
+### Accessing/Integration of mongodb ways:
+  - Code  (project-integration ko lagi)
+  - Shell(cli,mongosh)  These two are for debugging only(Shell & Compass)
+  - Compass(GUI) 
+
+
+## Conncetion to cluster:run or paste url with username and password
+ - after login to mongoose access db or create new db
+ - for that use command `use mern-12`
+
+
+### DB operations
+  - CRUD(Create,Read,Update,and Delete)
+  - Create -> Data/Table/trigger...
+
+  - Mainly we will do Data creation
+   ```   mongosh
+   
+   //users is : collection/table name
+   db.users.insertOne(userObj)
+   //(use to insert single data)
+
+   db.users.insertMany([userObjects,....])
+   //(use to insert multiple data at once)
+
+   ```
+
