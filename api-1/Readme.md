@@ -165,3 +165,27 @@ note: data send by client is received by three way:form-data,raw,urlencoded
 
    ```
 
+ - Read Operation
+   ```
+   db.<collection_name>.find({},projection,sort:{},limit:0,skip:0)
+   db.<collection_name>.findOne()
+
+   ```
+
+ - Update Operation
+   ```
+   mongosh
+   db.<collectionName>.updateOne(filter,{$set:{dataInJson}},{upsert:true})  
+    db.<collectionName>.updateMany(filter,{$set:{dataInJson}},{upsert:true})  
+    ```
+
+
+  - Delete Operation
+     ```
+     mongosh
+     db.<collectionName>.deleteOne(filter) 
+     db.<collectionName>.deleteMany(filter) 
+     ```
+
+
+
