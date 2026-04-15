@@ -188,11 +188,11 @@ note: data send by client is received by three way:form-data,raw,urlencoded
      ```
 
 ### User data
- - _id,name,email,password,role,image,address,phone,dob.gender,activationToken,expiry,forgetToken,status,createAt,updatedAt,createdBy,
- UpdatedBy
+ - _id,name,email,password,role,image,address,phone,dob,gender,activationToken,expiry,forgetToken,status,createAt,updatedAt,createdBy,
+UpdatedBy
 
  ### Login Data (session)
- - _id,user,token, data,status,createdAt, updatedAt
+ - _id,user,token{accessToken:"",refreshToken:""}, data:Map,status,createdAt,updatedAt
 
 - To integrate mongodb into project it require package called ODM (i.e mongoose) 
 
