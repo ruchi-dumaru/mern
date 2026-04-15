@@ -187,5 +187,22 @@ note: data send by client is received by three way:form-data,raw,urlencoded
      db.<collectionName>.deleteMany(filter) 
      ```
 
+### User data
+ - _id,name,email,password,role,image,address,phone,dob.gender,activationToken,expiry,forgetToken,status,createAt,updatedAt,createdBy,
+ UpdatedBy
+
+ ### Login Data (session)
+ - _id,user,token, data,status,createdAt, updatedAt
+
+- To integrate mongodb into project it require package called ODM (i.e mongoose) 
 
 
+## Config setup
+
+- For local server
+  - MONGODB_URL=mongodb://127.0.0.1:27017
+  - MONGODB_DB_NAME=api-12
+
+- FOR Altas Server
+  - MONGODB_URL=mongodb+srv://<db_username>:<db_password>@databaseserver.sdeoe00.mongodb.net/?appName=databaseServer
+  - MONGODB_DB_NAME=api-12

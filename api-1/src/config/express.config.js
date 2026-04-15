@@ -1,4 +1,5 @@
 const express = require("express");
+const {dbConncetion}=require("./db.config")
 const router=require("./router.config");
 const errorHandler=require('../middleware/error-handling.middleware')
 const app = express();
@@ -6,6 +7,12 @@ const app = express();
 //middleware for receuving data
 //parser
 //json
+
+
+//mongodb connection
+dbConncetion()
+
+
 app.use(express.json({
   limit:"2mb"
 }))
