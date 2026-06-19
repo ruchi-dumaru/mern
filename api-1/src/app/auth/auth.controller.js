@@ -1,14 +1,16 @@
 //dynamic or paramaterized router
 //http://localhost:9001/api/v1/auth/activate/9891gdfnb3$$
 
-const userScv = require("../../user/user.service");
+const userScv = require("../user/user.service");
+
+
 
 class AuthController {
   registerUser = async (req, res, next) => {
     try {
-      const data = userScv.transformDataToUser(req);
+      const data = await userScv.transformDataToUser(req);
       const user = await userScv.storeUser(data);
-console.log("richhhhhhhhhhhhh")
+
 console.log(req.file)
       res.status(201).json({
         data: userScv.getUserProfile(user),

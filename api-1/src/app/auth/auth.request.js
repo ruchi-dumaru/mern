@@ -12,8 +12,8 @@ const registerDTO = Joi.object({
   confirmPassword:Joi.ref('password'),
   role:Joi.string().regex(roleRegex).default('customer').messages({
     "string.pattern.base":"Role must be either 'seller'or'customer'"
-  })
-  
+  }),
+   image:Joi.string().allow(null,'').optional().default(null)
 },
 )
 

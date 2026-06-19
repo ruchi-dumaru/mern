@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { userRoles, gender, Status } = require("../config/constant.config");
+const { userRoles, gender, Status } = require("../../config/constant.config");
 
 const userSchema = mongoose.Schema(
   {
@@ -12,10 +12,10 @@ const userSchema = mongoose.Schema(
     },
     email: {
       type: String,
-       unique:true,
-       lowercase:true,
-       trim:true,
-      required: true
+      unique: true,
+      lowercase: true,
+      trim: true,
+      required: true,
     },
     password: {
       type: String,
@@ -28,7 +28,7 @@ const userSchema = mongoose.Schema(
       default: userRoles.CUSTOMER,
     },
     image: {
-      type: String,
+      id: String,
       optimizedUrl: String,
       originalUrl: String,
     },

@@ -6,11 +6,11 @@ const uploader=(type="image")=>{
   let allowedExts=['jpg','jpeg','png','gif','bmp','svg','webp']
   let size=3*1024*1024
 
-  if(type=== 'doc'){
+  if(type === 'doc'){
     allowedExts=['docs','docx','csv','txt','pdf','json']
     size=5*1024*1024
   }
-  else if(type==='audio')
+  else if(type ==='audio')
   {
     allowedExts=['mp3'];
     size=10*1024*1024
@@ -18,8 +18,8 @@ const uploader=(type="image")=>{
   }
 
   const fileFilter=(req,file,cb)=>{
-    const ext=file.originalname.split('.').pop().toLowerCase()
-    if(allowedExts.includes(ext)){
+    const ext=file.originalname.split('.').pop();
+    if(allowedExts.includes(ext.toLowerCase())){
       cb(false,true)
     }else{
       cb({code:422,message:"File format not supported",status:"INVALID_FILE"})

@@ -1,4 +1,4 @@
-require("dotenv").config();//.env available to this file
+require("dotenv").config(); //.env available to this file
 
 const DBConfig = {
   mongodbUrl: process.env.MONGODB_URL,
@@ -6,8 +6,17 @@ const DBConfig = {
 };
 // constant expose
 
+const CloudinaryConfig = {
+  cloudName:process.env.CLOUDINARY_CLOUDNAME,
+  apiKey:process.env.CLOUDINARY_API_KEY,
+  apiSecret:process.env.CLOUDINARY_API_SECRET,
+};
+
+
+
 module.exports = {
-  DBConfig
+  DBConfig,
+  CloudinaryConfig
 };
 
 // we have taken excess of config such that we don't need to import dotenv pkg in multiple pg
