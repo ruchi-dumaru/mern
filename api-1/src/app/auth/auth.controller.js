@@ -2,6 +2,7 @@
 //http://localhost:9001/api/v1/auth/activate/9891gdfnb3$$
 
 const userScv = require("../user/user.service");
+const authMailSvc = require("./auth.mail");
 
 
 
@@ -11,7 +12,10 @@ class AuthController {
       const data = await userScv.transformDataToUser(req);
       const user = await userScv.storeUser(data);
 
-console.log(req.file)
+     await  authMailSvc.activateUserAccount(user)
+//smpt-->Gmail
+//SMS-->GSM
+//Push--->Google(firebase)
       res.status(201).json({
         data: userScv.getUserProfile(user),
         message: "User registered succesfully",

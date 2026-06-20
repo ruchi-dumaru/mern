@@ -23,7 +23,14 @@ const fileDelete = (filepath) => {
   return false;
 };
 
+const dateCreate=(date,day)=>{
+let dateObj=new Date(date);
+const newDate=dateObj.getTime()+(day*86400000)
+return new Date(newDate)
+}
+
 module.exports = {
   generateRandomString,
-  fileDelete
+  fileDelete,
+  dateCreate
 };

@@ -4,7 +4,7 @@ const bodyValidator = (rules) => {
   return async (req, res, next) => {
     try {
       const data = req.body;
-      console.log("hello");
+      
       if (!data) {
         console.log("data empty");
         next({

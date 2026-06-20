@@ -24,7 +24,7 @@ class cloudinaryService {
         }
        
       )
- console.log("i am here")
+
       //update file
       const thumbUrl = cloudinary.url(public_id, {
         transformation: [
