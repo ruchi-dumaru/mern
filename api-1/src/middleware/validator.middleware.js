@@ -1,6 +1,6 @@
 //custom func to validate data
 const bodyValidator = (rules) => {
-  console.log("I am here in body validator");
+  
   return async (req, res, next) => {
     try {
       const data = req.body;

@@ -8,6 +8,7 @@ class MailService {
   constructor() {
     try {
       this.#transporter = nodemailer.createTransport(EmailConfig.gmail);
+      console.log('******SMTP Server Connected,Service provider:Gmail********')
     } catch (exception) {
       console.log(exception);
       throw {
