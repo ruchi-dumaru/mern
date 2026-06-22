@@ -48,11 +48,35 @@ class userService {
     }
   }
 
+//query to get data from database
+
+async getSingleRowByFilter(filter){
+  try{
+    
+    const userDetail= await userModel.findOne(filter)
+    // console.log('getSingleRowByFilter:',userDetail)
+  return userDetail
+  }catch(exception){
+    throw exception
+  } 
+}
+
+  
+async updateSingleRowByFilter(filter,data){
+  try{
+   const userDetail=await userModel.findOneAndUpdate(filter,{$set:data},{new:true});
+   return this.getUserProfile(userDetail);
+  }catch(exception){
+    throw exception
+  } 
+}
+
+
   getUserProfile(userObj) {
     return {
       _id: userObj._id ?? "",
       name: userObj.name ?? "",
-      email: userObj.name ?? "",
+      email: userObj.email ?? "",
       role: userObj.role ?? "",
       image: userObj.image ?? "",
       address: userObj.address ?? "",

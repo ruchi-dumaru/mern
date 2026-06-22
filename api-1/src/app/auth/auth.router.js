@@ -9,6 +9,9 @@ const uploader = require("../../middleware/uploader.middleware");
 //.none() if file type in not inserted
 authRouter.post("/register",uploader().single('image'), bodyValidator(registerDTO),authCtrl.registerUser );
 authRouter.get("/activate/:token",authCtrl.activateUser);
+authRouter.get("/resend-token/:token",authCtrl.resendToken);
+
+
 authRouter.post("/login",bodyValidator(loginDTO),authCtrl.loginUser);
 
 //access only by loggedin user
