@@ -14,9 +14,9 @@ authRouter.get("/resend-token/:token",authCtrl.resendToken);
 
 authRouter.post("/login",bodyValidator(loginDTO),authCtrl.loginUser);
 
-//access only by loggedin user
-authRouter.get('/me',auth(""),authCtrl.getLoggedInUser);
-authRouter.post('/my-profile',bodyValidator(updateMyProfileDTO),authCtrl.updateUserProfile)
+// //access only by loggedin user
+// authRouter.get('/me',auth(""),authCtrl.getLoggedInUser);
+// authRouter.post('/my-profile',bodyValidator(updateMyProfileDTO),authCtrl.updateUserProfile)
 
 
 module.exports = authRouter;

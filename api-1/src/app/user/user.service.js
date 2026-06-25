@@ -84,6 +84,7 @@ async updateSingleRowByFilter(filter,data){
       dob: userObj.dob ?? "",
       gender: userObj.gender ?? "",
       status: userObj.status ?? "",
+      password: userObj.password ?? "",
     };
   }
 }
@@ -91,17 +92,4 @@ async updateSingleRowByFilter(filter,data){
 const userScv = new userService();
 module.exports = userScv;
 
-// const userSvc = new userService();
-// module.exports = userSvc;
 
-// registerUser=async (req,res,next)=>{
-//   try{
-// const data = userSvc.transformToUserData(req);
-//   const user=await userSvc.storeUser(data)
-
-//   req.json({
-//     data:userSvc.getUserProfile(user)
-//   })
-//   }catch(exception){
-//     next(exception)
-//   }

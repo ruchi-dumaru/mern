@@ -1,11 +1,14 @@
 //dynamic or paramaterized router
 //http://localhost:9001/api/v1/auth/activate/9891gdfnb3$$
 
+const { AppConfig } = require("../../config/config");
 const { Status } = require("../../config/constant.config");
 const { generateRandomString, dateCreate } = require("../../utilities/helper");
 const userScv = require("../user/user.service");
 const authMailSvc = require("./auth.mail");
-
+const bcrypt=require("bcryptjs");
+const jwt=require("jsonwebtoken");
+const AuthService = require("./auth.service");
 
 
 class AuthController {
@@ -118,12 +121,47 @@ class AuthController {
     }
   }
 
-  loginUser = (req, res) => {
-    res.json({
-      data: {},
-      message: "User logged In",
-      status: "OK",
-    });
+  loginUser = async (req, res,next) => {
+    const {email,password}=req.body
+
+    const userDetail= await userScv.getSingleRowByFilter({email:email})
+
+    if(!userDetail){
+      throw{
+        code:422,
+        message:"Email not registered yet",
+        status:"EMAIL_NOT_FOUND"
+      }
+    }
+
+    if (userDetail.status!==Status.ACTIVE){
+      throw{code:422,message:"Account not activated",status:"ACCOUNT_NOT_ACTIVATED"}
+    }
+
+    if(!bcrypt.compareSync(password,userDetail.password)){
+      console.log(exception)
+    throw{code:422,message:"Invalid credentials",status:"INVALID_CREDENTIALS"}
+    }
+
+
+//token
+  //  jwt.sign(payload, secretOrPrivateKey, [options, callback])
+  const accessToken=jwt.sign({sub:userDetail._id,typ:"Bearer"},AppConfig.jwtSecret,{expiresIn:"1d"})
+
+
+  //session store
+
+ await AuthService.storeSession(userDetail._id,accessToken)
+
+
+  res.json({
+   data:accessToken,
+   message:"Login successful",
+   status:"LOGIN_SUCCESS"
+  })
+
+   
+   }
   };
 
   getLoggedInUser = (req, res) => {
@@ -147,7 +185,7 @@ class AuthController {
       status: "OK",
     });
   };
-}
+
 
 const authCtrl = new AuthController();
 module.exports = authCtrl;
