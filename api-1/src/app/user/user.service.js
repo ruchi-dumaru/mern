@@ -64,7 +64,7 @@ async getSingleRowByFilter(filter){
   
 async updateSingleRowByFilter(filter,data){
   try{
-   const userDetail=await userModel.findOneAndUpdate(filter,{$set:data},{new:true});
+   const userDetail=await userModel.findOneAndUpdate(filter,{$set:data}, { returnDocument: 'after' } );
    return this.getUserProfile(userDetail);
   }catch(exception){
     throw exception

@@ -14,6 +14,14 @@ class AuthService {
       throw exception;
     }
   }
+
+  async getSingleRowByFilter(filter){
+    try{
+      return await SessionModel.findOne(filter).populate('user',['_id','name','email','address','phone','dob','status','gender','image','role']);
+    }catch(exception){
+      throw exception
+    }
+  }
 }
 
 module.exports = new AuthService();

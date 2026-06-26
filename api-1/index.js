@@ -1,6 +1,5 @@
 const http = require("http"); //es5
-const app=require("./src/config/express.config.js");
-
+const app = require("./src/config/express.config.js");
 
 // const httpServer= http.createServer((req,res)=>{
 // if(req.method==='GET' && req.url==='/product'){
@@ -13,10 +12,10 @@ const app=require("./src/config/express.config.js");
 // }
 // })
 
-const httpServer=http.createServer(app)
+const httpServer = http.createServer(app);
 
 const HOST = "127.0.0.1";
-const PORT = "9001";
+const PORT = "9006";
 
 httpServer.listen(PORT, HOST, (err) => {
   console.log("Server is running successfully...");
