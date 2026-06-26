@@ -20,6 +20,8 @@ authRouter.post("/login",bodyValidator(loginDTO),authCtrl.loginUser);
 
 
 authRouter.get("/me",auth([userRoles.SELLER]),authCtrl.getLoggedInUser);
+authRouter.get("/logout",auth(),authCtrl.loggedOut);
+
 authRouter.post('/my-profile',auth(['admin']),bodyValidator(updateMyProfileDTO),authCtrl.updateUserProfile)
 
 

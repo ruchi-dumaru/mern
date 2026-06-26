@@ -19,7 +19,16 @@ class AuthService {
     try{
       return await SessionModel.findOne(filter).populate('user',['_id','name','email','address','phone','dob','status','gender','image','role']);
     }catch(exception){
+      console.log(exception)
       throw exception
+    }
+  }
+
+  async deleteManyByFilter(filter){
+    try{
+  return await SessionModel.deleteMany(filter);
+    }catch(exception){
+   throw exception
     }
   }
 }

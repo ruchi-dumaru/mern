@@ -9,6 +9,7 @@ const authMailSvc = require("./auth.mail");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const AuthService = require("./auth.service");
+const authService = require("./auth.service");
 
 class AuthController {
   registerUser = async (req, res, next) => {
@@ -190,6 +191,32 @@ class AuthController {
     res.json({
       data: req.loggedInUser,
       message: "MY profile",
+      status: "OK",
+    });
+  };
+
+  loggedOut = async(req, res) => {
+    try {
+      //loggedout from current device
+      let filter = {
+        accessToken: req.headers["authorization"].replace("Bearer ", ""),
+      };
+
+      //logout from all
+      if (req.query.devices === "all") {
+        filter = {
+          user: req.loggedInUser._id,
+        };
+      }
+
+      await authService.deleteManyByFilter(filter);
+
+    } catch (exception) {
+      next(exception);
+    }
+    res.json({
+      data: null,
+      message: "You have been logged out",
       status: "OK",
     });
   };

@@ -18,7 +18,7 @@ const auth = (roles=null) => {
      try{
       
 let token =req.headers['authorization']??null;
-console.log(token);
+// console.log(token);
 if(!token){
   throw{code:401,message:"Unauthorized access" ,status:"UNAUTHORIZED_ACCESS_ERR"}
 }
@@ -35,7 +35,7 @@ if(!sessionInfo){
 
 //session found
 const decodedToken=jwt.verify(token,AppConfig.jwtSecret);
-console.log("3rd decodedToken:"+decodedToken);
+// console.log("3rd decodedToken:"+decodedToken);
 if(decodedToken.typ!=="Bearer"){
   throw{code:401,message:"Invalid Token Type",status:"SESSION_NOT_FOUND_ERR"}
 }
@@ -47,7 +47,7 @@ throw{code:401,message:"Associated User Not Found",status:"ASSOCIATED_USER_NOT_F
 //future
 //req manipulation
 req.loggedInUser= sessionInfo.user
-console.log(sessionInfo.user)
+// console.log(sessionInfo.user)
 
 if(!roles|| sessionInfo.user.role===userRoles.Admin||
   roles.includes(sessionInfo.user.role)
@@ -62,7 +62,7 @@ else{
   }
   catch(exception){
   
-     console.error("THE REAL MIDDLEWARE ERROR IS:", exception);
+    //  console.error("THE REAL MIDDLEWARE ERROR IS:", exception);
 
 if (exception.name === 'TokenExpiredError'){
   exception.code=401
@@ -75,8 +75,8 @@ else if(exception.name === 'JsonWebTokenError'){
   exception.status="TOKEN_EXPIRED_ERR"
   exception.status="TOKEN_EXPIRED_ERR"
 }
+return next(exception); 
   }
-   return next(exception); 
   }
  
 };
