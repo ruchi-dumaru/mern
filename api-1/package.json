@@ -11,7 +11,8 @@
 		"jsonwebtoken": "^9.0.3",
 		"mongoose": "^9.4.1",
 		"multer": "^2.2.0",
-		"nodemailer": "^9.0.1"
+		"nodemailer": "^9.0.1",
+		"slugify": "^1.6.9"
 	},
 	"name": "api-1",
 	"version": "1.0.0",

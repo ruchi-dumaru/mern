@@ -195,7 +195,7 @@ class AuthController {
     });
   };
 
-  loggedOut = async(req, res) => {
+  loggedOut = async(req, res,next) => {
     try {
       //loggedout from current device
       let filter = {
@@ -222,9 +222,11 @@ class AuthController {
   };
 
   updateUserProfile = (req, res) => {
-    // Is the user logged In  ?
-    //success=> response
-    //failure=>error msg
+   try{
+
+   }catch(exception){
+  next  (exception)
+   }
     res.json({
       data: {},
       message: "Can Update Profile",
@@ -244,8 +246,4 @@ module.exports = authCtrl;
 //     //     code:404,
 //     //     message:"Token not found or broken",
 //     //     status:"TOKEN_NOT_FOUND"
-//     //   }
-//     // }
-//     // }catch(exception){
-//     //   throw exception
-//     // }
+//     //  }
