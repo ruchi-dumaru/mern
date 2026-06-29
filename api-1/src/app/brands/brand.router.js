@@ -11,20 +11,23 @@ const multer=require('multer');
 // brandRouter.post("/", auth([userRoles.ADMIN]),uploader().single("logo"),bodyValidator(BrandDataDTO),brandCtrl.createBrand);
 brandRouter.post(
   "/",
-  (req, res, next) => {
-    console.log("POST /brand hit");
-    next();
-  },
   auth([userRoles.ADMIN]),
   uploader().single("logo"),
   bodyValidator(BrandDataDTO),
   brandCtrl.createBrand
 );
 
-brandRouter.get("/", brandCtrl.listAllBrand);
+//public ra backend excess route for listing
+brandRouter.get("/", auth([userRoles.ADMIN]),brandCtrl.listAllBrand);
+brandRouter.get("/front-list",brandCtrl.frontlistAllBrand);
+
+
 brandRouter.get("/:id", brandCtrl.viewBrandDetailById);
 brandRouter.get("/:slug/by-slug", brandCtrl.viewBrandDetailBySlug);
 brandRouter.put("/:id", brandCtrl.updateBrandById);
 brandRouter.delete("/:id", brandCtrl.deleteBrandById);
 
 module.exports = brandRouter;
+
+
+

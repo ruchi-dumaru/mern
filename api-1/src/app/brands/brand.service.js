@@ -22,11 +22,45 @@ class BrandService {
     }
   }
 
- async storeBrand(data) {
+  async storeBrand(data) {
     try {
       const brand = new BrandModel(data);
-      console.log(brand)
       return brand.save();
+    } catch (exception) {
+      throw exception;
+    }
+  }
+
+  async getAllRowsByFilter(filter, pagination) {
+    try {
+      const data = await BrandModel.find(filter)
+        .populate("createdBy", [
+          "_id",
+          "name",
+          "email",
+          "address",
+          "phone",
+          "dob",
+          "status",
+          "gender",
+          "image",
+          "role",
+        ])
+        .populate("updatedBy", [
+          "_id",
+          "name",
+          "email",
+          "address",
+          "phone",
+          "dob",
+          "status",
+          "gender",
+          "image",
+          "role",
+        ])
+        .sort({ createdAt: "desc" });
+console.log("Data:",data)
+      return data;
     } catch (exception) {
       throw exception;
     }
@@ -34,3 +68,8 @@ class BrandService {
 }
 
 module.exports = new BrandService();
+
+
+
+   
+

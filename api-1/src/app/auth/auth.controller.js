@@ -10,6 +10,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const AuthService = require("./auth.service");
 const authService = require("./auth.service");
+const SessionModel = require("./session.model");
 
 class AuthController {
   registerUser = async (req, res, next) => {
@@ -178,16 +179,19 @@ class AuthController {
 
     //session store
 
-    await AuthService.storeSession(userDetail._id, accessToken);
-
+   const result= await AuthService.storeSession(userDetail._id, accessToken);
+   console.log(await SessionModel.countDocuments());
+console.log("loggged in user ::",result);
     res.json({
       data: accessToken,
       message: "Login successful",
       status: "LOGIN_SUCCESS",
     });
+    
   };
 
   getLoggedInUser = (req, res) => {
+    console.log("getloggedinuser:", req.loggedInUser)
     res.json({
       data: req.loggedInUser,
       message: "MY profile",

@@ -4,9 +4,9 @@ class brandController {
   async createBrand(req, res, next) {
     try {
       const data = await brandService.transformToBrand(req);
-      console.log(data);
+      console.log("brand data",data);
       const brand = await brandService.storeBrand(data);
-      console.log("brandCtrl:", brand);
+      // console.log("brandCtrl:", brand);
 
       res.status(201).json({
         data: brand,
@@ -18,13 +18,30 @@ class brandController {
     }
   }
 
-  listAllBrand = (req, res) => {
+  async listAllBrand  (req, res,next)  {
+    try{
+      const dataList= await brandService.getAllRowsByFilter()
+      console.log(dataList)
+   res.json({
+      data: dataList,
+      message: "All brand List",
+      status: "OK",
+    });
+    }catch(exception){
+   next (exception)
+    }
+   
+  };
+
+
+    frontlistAllBrand = (req, res,next) => {
     res.json({
       data: null,
       message: "All brand List",
       status: "OK",
     });
   };
+
 
   viewBrandDetailById = (req, res) => {
     const params = req.params;
