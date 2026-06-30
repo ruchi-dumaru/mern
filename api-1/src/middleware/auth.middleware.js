@@ -18,12 +18,13 @@ const auth = (roles=null) => {
      try{
       
 let token =req.headers['authorization']??null;
-// console.log(token);
+
 if(!token){
   throw{code:401,message:"Unauthorized access" ,status:"UNAUTHORIZED_ACCESS_ERR"}
 }
 //token found
 token=token.replace("Bearer ","");
+console.log("Token2:",token);
 const sessionInfo= await authService.getSingleRowByFilter({
   accessToken:token
 });
@@ -81,3 +82,5 @@ return next(exception);
  
 };
 module.exports = auth;
+
+

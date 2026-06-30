@@ -9,23 +9,19 @@ const multer=require('multer');
 //brand route mount
 
 // brandRouter.post("/", auth([userRoles.ADMIN]),uploader().single("logo"),bodyValidator(BrandDataDTO),brandCtrl.createBrand);
-brandRouter.post(
-  "/",
-  auth([userRoles.ADMIN]),
-  uploader().single("logo"),
-  bodyValidator(BrandDataDTO),
-  brandCtrl.createBrand
+brandRouter.post("/",auth([userRoles.ADMIN]),uploader().single("logo"),bodyValidator(BrandDataDTO),brandCtrl.createBrand
 );
+
 
 //public ra backend excess route for listing
 brandRouter.get("/", auth([userRoles.ADMIN]),brandCtrl.listAllBrand);
 brandRouter.get("/front-list",brandCtrl.frontlistAllBrand);
 
-
-brandRouter.get("/:id", brandCtrl.viewBrandDetailById);
+//private route
+brandRouter.get("/:id",auth([userRoles.ADMIN]), brandCtrl.viewBrandDetailById);
 brandRouter.get("/:slug/by-slug", brandCtrl.viewBrandDetailBySlug);
-brandRouter.put("/:id", brandCtrl.updateBrandById);
-brandRouter.delete("/:id", brandCtrl.deleteBrandById);
+brandRouter.put("/:id",auth([userRoles.ADMIN]),uploader().single("logo"),bodyValidator(BrandDataDTO), brandCtrl.updateBrandById);
+brandRouter.delete("/:id", auth([userRoles.ADMIN]),brandCtrl.deleteBrandById);
 
 module.exports = brandRouter;
 

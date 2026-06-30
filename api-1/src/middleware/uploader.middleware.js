@@ -5,7 +5,7 @@ const { generateRandomString } = require('../utilities/helper');
 
 
 const uploader=(type="image")=>{
-  let allowedExts=['jpg','jpeg','png','gif','bmp','svg','webp']
+  let allowedExts=['jpg','tif','jpeg','png','gif','bmp','svg','webp']
   let size=3*1024*1024
 
   if(type === 'doc'){
