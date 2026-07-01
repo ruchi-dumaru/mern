@@ -86,7 +86,9 @@ class BrandService {
         .skip(skip)
 
         const total=await BrandModel.countDocuments(filter)
-
+console.log("Query completed");
+console.log(data);
+        console.log("getwaladata:",data)
       return {
         data,pagination:{
           ...pagination,
@@ -126,7 +128,8 @@ class BrandService {
           "image",
           "role",
         ])
-        
+        console.log("Query completed");
+console.log(data);
       return data;
       
     }catch(exception){

@@ -34,14 +34,12 @@ const BrandSchema=new mongoose.Schema({
         ref: "User",
         default: null,
       },
-  
 },{
-  
     timestamps: true, //createdAt,updatedAt
     autoCreate: true,
     autoIndex: true,
-  
 })
-
 const BrandModel= mongoose.model("Brand",BrandSchema)
 module.exports=BrandModel
+
+

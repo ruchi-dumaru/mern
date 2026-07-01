@@ -76,11 +76,12 @@ class brandController {
           ...filter,
           isFeatured: true,
         };
-      } else if (+req.query.isFeatured === 1) {
+      } else if (+req.query.isFeatured === 0) {
         filter = {
           ...filter,
           isFeatured: false,
         };
+      }
         const page = +req.query.page || 1;
         const limit = +req.query.limit || 20;
 
@@ -95,7 +96,7 @@ class brandController {
           status: "OK",
           meta: { pagination },
         });
-      }
+      
     } catch (exception) {
       next(exception);
     }

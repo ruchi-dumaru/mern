@@ -206,3 +206,28 @@ UpdatedBy
 - FOR Altas Server
   - MONGODB_URL=mongodb+srv://<db_username>:<db_password>@databaseserver.sdeoe00.mongodb.net/?appName=databaseServer
   - MONGODB_DB_NAME=api-12
+
+### Ctaegories
+- name,slug,parendId,isFeatured,status,icon,brands,createdBy,updatedBy,ceratedAt,updatedAt
+
+- eg. Motors,tool and DIY
+{
+  _id:ObjectId("123"),
+  name: Motors,tool and DIY,
+  slug:"motor-tools-diy",
+  parentId:null,
+  isFeatured:true,
+  status:"active",
+  ....
+}
+
+Lubricants
+{
+  _id:ObjectId("900"),
+  name:"Lubricants" ,
+  slug:"lubricatns",
+  parentId:ObjectId("123"),
+  isFeatured:true,
+  status:"active",
+  ....
+}

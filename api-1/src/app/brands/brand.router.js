@@ -25,5 +25,3 @@ brandRouter.delete("/:id", auth([userRoles.ADMIN]),brandCtrl.deleteBrandById);
 
 module.exports = brandRouter;
 
-
-

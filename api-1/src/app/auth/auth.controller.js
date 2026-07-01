@@ -191,7 +191,7 @@ console.log("loggged in user ::",result);
   };
 
   getLoggedInUser = (req, res) => {
-    console.log("getloggedinuser:", req.loggedInUser)
+   
     res.json({
       data: req.loggedInUser,
       message: "MY profile",
