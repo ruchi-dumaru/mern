@@ -1,0 +1,173 @@
+const { Status } = require("../../config/constant.config");
+const userService = require("./user.service");
+const userModel = require("./user.model");
+const userScv = require("./user.service");
+class UserController {
+ 
+
+  async listAllUsers(req, res, next) {
+    try {
+      //active inactive both status search
+      let filter = {
+        _id:{$ne: req.loggedInUser._id}
+      };
+
+      if (req.query.search) {
+        filter = {
+          ...filter,
+          $or:[{name: new RegExp(req.query.search, "i")},
+          {email: new RegExp(req.query.search, "i")},
+         {phone: new RegExp(req.query.search, "i")},
+         {address: new RegExp(req.query.search, "i")},
+        ],
+        };
+      }
+
+      if (req.query.status) {
+        filter = {
+          ...filter,
+          status: req.query.status,
+        };
+      }
+
+
+      if (req.query.role){
+        filter={
+          ...filter,
+          status:req.query.role
+        }
+      }
+
+      
+      if (req.query.gender){
+        filter={
+          ...filter,
+          status:req.query.gender
+        }
+      }
+
+
+      //pagination
+      const page = +req.query.page || 1;
+      const limit = +req.query.limit || 20;
+
+      const { data, pagination } = await userService.getAllRowsByFilter(
+        filter,
+        { page, limit },
+      );
+
+      res.json({
+        data: data,
+        message: "All user List",
+        status: "OK",
+        meta: { pagination },
+      });
+    } catch (exception) {
+      next(exception);
+    }
+  }
+
+ 
+  async viewUserDetailById(req, res, next) {
+    try {
+      const id = req.params.id;
+      const detail = await userService.getSingleRowByFilter({
+        _id: id,
+      });
+
+      if (!detail) {
+        throw { code: 404, message: "User not found", status: "NOT_FOUND" };
+      }
+      res.json({
+        data: userScv.getUserProfile(detail),
+        message: "User Detail",
+        status: "OK",
+      });
+    } catch (exception) {
+      next(exception);
+    }
+  }
+
+  async viewUserDetailBySlug(req, res, next) {
+    try {
+      const filter = {
+        status: Status.ACTIVE,
+        slug: req.params.slug,
+      };
+      let detail = await userService.getSingleRowByFilter(filter);
+
+      if (!detail) {
+        throw { code: 404, message: "User not found", status: "NOT_FOUND" };
+      }
+      res.json({
+        detail: {
+          user: detail,
+          product: null,
+        },
+        message: "User detail by slug",
+        status: "OK",
+        meta: {
+          pagination: {
+            page: 1,
+            limit: 20,
+            total: 0,
+          },
+        },
+      });
+    } catch (exception) {
+      next(exception);
+    }
+  }
+
+  async updateUserById(req, res, next) {
+    try {
+      const id = req.params.id;
+      let detail = await userService.getSingleRowByFilter({
+        _id: id,
+      });
+
+      if (!detail) {
+        throw { code: 404, message: "User not found", status: "NOT_FOUND" };
+      }
+
+      const data = await userService.transformToUserForUpdate(req, detail);
+
+      detail = await userService.updateSingleRowByUser({ _id: id }, data);
+
+      res.json({
+        data: detail,
+        message: "User updated",
+        status: "OK",
+      });
+    } catch (exception) {
+      next(exception);
+    }
+  }
+
+  async deleteUserById(req, res, next) {
+    try {
+      const id = req.params.id;
+      let detail = await userService.getSingleRowByFilter({
+        _id: id,
+      });
+
+      if (!detail) {
+        throw { code: 404, message: "User not found", status: "NOT_FOUND" };
+      }
+
+      await userService.deleteSingleRowByFilter({ _id: id });
+      res.json({
+        data: null,
+        message: "User deleted",
+        status: "OK",
+      });
+    } catch (exception) {
+      next(exception);
+    }
+  }
+
+  
+}
+const userCtrl = new UserController();
+
+module.exports = userCtrl;

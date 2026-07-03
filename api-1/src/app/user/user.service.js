@@ -48,6 +48,23 @@ class userService {
     }
   }
 
+
+  async transformUserForUpdate(req,oldUser){
+    try{
+ const data=req.body;
+ if(req.file){
+  data.image=await cloudinarySvc.singleFileUpload(req.file.path,'users')
+ }else{
+  data.image=oldUser.image;
+
+ }
+
+ data.updatedBy=req.loggedInUser._id;
+    }catch(exception){
+      throw exception
+    }
+  }
+
 //query to get data from database
 
 async getSingleRowByFilter(filter){
@@ -71,6 +88,63 @@ async updateSingleRowByFilter(filter,data){
   } 
 }
 
+ async getAllRowsByFilter(filter, pagination) {
+    try {
+
+      let skip=(pagination.page-1)*pagination.limit;
+
+      const data = await userModel.find(filter)
+        .populate("createdBy", [
+          "_id",
+          "name",
+          "email",
+          "address",
+          "phone",
+          "dob",
+          "status",
+          "gender",
+          "image",
+          "role",
+        ])
+        .populate("updatedBy", [
+          "_id",
+          "name",
+          "email",
+          "address",
+          "phone",
+          "dob",
+          "status",
+          "gender",
+          "image",
+          "role",
+        ])
+        .sort({ createdAt: "desc" })
+        .limit(pagination.limit)
+        .skip(skip)
+
+        const total=await userModel.countDocuments(filter)
+
+        console.log("getwaladata:",data)
+      return {
+
+        //password prevented from public share
+        data:data.map((userInfo)=>this.getUserProfile(userInfo)),pagination:{
+          ...pagination,
+          total:total
+        }
+      }
+    } catch (exception) {
+      throw exception;
+    }
+  }
+
+async deleteSingleRowByFilter(filter){
+  try{
+ return await userModel.findOneAndDelete(filter);
+  }catch(exception){
+    throw exception
+  }
+}
 
   getUserProfile(userObj) {
     return {

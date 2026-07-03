@@ -52,7 +52,7 @@ const userSchema = mongoose.Schema(
       ref: "User",
       default: null,
     },
-    UpdatedBy: {
+    updatedBy: {
       type: mongoose.Types.ObjectId,
       ref: "User",
       default: null,
