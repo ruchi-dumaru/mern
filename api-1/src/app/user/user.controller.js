@@ -130,9 +130,9 @@ class UserController {
         throw { code: 404, message: "User not found", status: "NOT_FOUND" };
       }
 
-      const data = await userService.transformToUserForUpdate(req, detail);
+      const data = await userService.transformUserForUpdate(req, detail);
 
-      detail = await userService.updateSingleRowByUser({ _id: id }, data);
+      detail = await userService.updateSingleRowByFilter({ _id: id }, data);
 
       res.json({
         data: detail,
@@ -155,6 +155,9 @@ class UserController {
         throw { code: 404, message: "User not found", status: "NOT_FOUND" };
       }
 
+      if(detail.role=== UserRole.ADMIN){
+        throw {code:403,message:"Admin cannot be deleted",status:"PERMISSION_DENIED"}
+      }
       await userService.deleteSingleRowByFilter({ _id: id });
       res.json({
         data: null,

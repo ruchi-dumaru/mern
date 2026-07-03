@@ -30,8 +30,26 @@ const updateMyProfileDTO=Joi.object({
   image:Joi.string().allow(null,'').optional().default(null)
 })
 
+
+
+const updateUserProfileDTO=Joi.object({
+ name:Joi.string().min(3).max(30).required(),
+ address: Joi.string().min(3).max(250).required(),
+  gender:Joi.string().allow('male','female','other').required(),
+  dob:Joi.date().less('now').required(),
+  image:Joi.string().allow(null,'').optional().default(null),
+  role:Joi.string().regex(/^(admin|seller|customer)$/).default('customer').messages({
+    "string.pattern.base":"Role must be either 'admin',seller'or'customer'"
+  }),
+phone:Joi.string().optional().allow('null','').default(null),
+  status:Joi.string().regex(/^(active|inactive)$/).required().messages({
+    "string.pattern.base":"Status can be either active or inactive"
+  }),
+})
+
 module.exports={
   registerDTO,
   loginDTO,
-  updateMyProfileDTO
+  updateMyProfileDTO,
+  updateUserProfileDTO
 }

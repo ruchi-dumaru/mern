@@ -60,6 +60,7 @@ class userService {
  }
 
  data.updatedBy=req.loggedInUser._id;
+ return data
     }catch(exception){
       throw exception
     }

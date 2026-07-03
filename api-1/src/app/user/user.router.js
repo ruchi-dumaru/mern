@@ -4,7 +4,7 @@ const auth = require("../../middleware/auth.middleware");
 const uploader = require("../../middleware/uploader.middleware");
 const bodyValidator = require("../../middleware/validator.middleware");
 const authCtrl = require("../auth/auth.controller");
-const { registerDTO, updateMyProfileDTO } = require("../auth/auth.request");
+const { registerDTO, updateUserProfileDTO } = require("../auth/auth.request");
 const userCtrl = require("./user.controller");
 const multer=require('multer');
 //user route mount
@@ -16,7 +16,7 @@ userRouter.get("/",auth(),userCtrl.listAllUsers)
 
 //private route
 userRouter.get("/:id",auth(), userCtrl.viewUserDetailById);
-userRouter.put("/:id",auth([userRoles.ADMIN]),uploader().single("image"),bodyValidator(updateMyProfileDTO), userCtrl.updateUserById);
+userRouter.put("/:id",auth([userRoles.ADMIN]),uploader().single("image"),bodyValidator(updateUserProfileDTO), userCtrl.updateUserById);
 userRouter.delete("/:id", auth([userRoles.ADMIN]),userCtrl.deleteUserById);
 // userRouter.get("/:slug/by-slug", userCtrl.viewUserDetailBySlug);
 
