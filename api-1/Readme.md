@@ -210,6 +210,10 @@ UpdatedBy
 ### Ctaegories
 - name,slug,parendId,isFeatured,status,icon,brands,createdBy,updatedBy,ceratedAt,updatedAt
 
+
+### Products
+- _id,name,slug,category[],brand,description,price,discount(%),afterDiscountAmount,seller,isFeatured,images,status,createdBy,updatedBy,createdAt,updatedAt
+
 - eg. Motors,tool and DIY
 {
   _id:ObjectId("123"),

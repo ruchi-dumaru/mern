@@ -20,15 +20,14 @@ class cloudinaryService {
         {
           unique_filename: true,
           // format:"auto",
-         folder: dir ? `ecom-12/${dir}` : "ecom-12"
-        }
-       
-      )
+          folder: dir ? `ecom-12/${dir}` : "ecom-12",
+        },
+      );
 
       //update file
       const thumbUrl = cloudinary.url(public_id, {
         transformation: [
-          { aspect_ratio: "1.0", width: 1024, height: 1024, crop: "fill" }
+          { aspect_ratio: "1.0", width: 1024, height: 1024, crop: "fill" },
         ],
       });
 
@@ -42,11 +41,9 @@ class cloudinaryService {
         optimizedUrl: thumbUrl,
         originalUrl: secure_url,
       };
-     
-    }
-     catch (exception) {
+    } catch (exception) {
       console.log(exception);
-     
+
       throw {
         code: 422,
         message: "Error uploading file",
@@ -54,10 +51,25 @@ class cloudinaryService {
       };
     }
   }
+
+  async multipleFileUpload(files, dir = null) {
+    try {
+      let images = files.map((file) => {
+        return cloudinarySvc.singleFileUpload(file.path, "products");
+      });
+      let uploadedFiles = await Promise.allSettled(images);
+      let uploadedImages = [];
+      uploadedFiles.map((file) => {
+        if (file.status === "fulfilled") {
+           uploadedImages.push(file.value);
+        }
+      });
+      return  uploadedImages
+    } catch (exception) {
+      throw exception;
+    }
+  }
 }
 
 const cloudinarySvc = new cloudinaryService();
 module.exports = cloudinarySvc;
-
-
-
