@@ -4,11 +4,9 @@ const productService = require("./product.service");
 class ProductController {
   async createProduct(req, res, next) {
     try {
-      console.log("HIIIIIIIIIIIIIIII");
       const data = await productService.transformToProduct(req);
-      console.log("DATASSSSSSS:", data);
+
       const product = await productService.storeProduct(data);
-      console.log("productCtrl:", product);
 
       res.status(201).json({
         data: product,

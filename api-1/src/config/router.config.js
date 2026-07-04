@@ -4,7 +4,7 @@ const frontRouter = require("../app/front/front.router");
 const bannerRouter = require("../app/banners/banner.router");
 const brandRouter = require("../app/brands/brand.router");
 const categoryRouter = require("../app/category/category.router");
-const productRouter=require("../app/products/product.router");
+const productRouter=require("../app/product/product.router");
 const userRouter = require("../app/user/user.router");
 
 //app
@@ -18,7 +18,7 @@ router.use("/category", categoryRouter);
 router.use("/product", productRouter);
 router.use("/front", frontRouter);
 router.use('/user',userRouter);
-router.use("/product",productRouter)
+
 module.exports = router;
 
 

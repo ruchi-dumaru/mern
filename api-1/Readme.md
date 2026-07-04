@@ -214,7 +214,7 @@ UpdatedBy
 ### Products
 - _id,name,slug,category[],brand,description,price,discount(%),afterDiscountAmount,seller,isFeatured,images,status,createdBy,updatedBy,createdAt,updatedAt
 
-- eg. Motors,tool and DIY
+// eg. Motors,tool and DIY
 {
   _id:ObjectId("123"),
   name: Motors,tool and DIY,

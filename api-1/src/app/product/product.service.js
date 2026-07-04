@@ -35,9 +35,9 @@ class ProductService {
 
       data.price=data.price*100;
       data.afterDiscountAmount=data.price-data.price*data.discount/100;
-      console.log("BATA:::",data)
+
       return data;
-      console.log("serv dataProduct:",data)
+     
     } catch (exception) {
       throw exception;
     }
@@ -45,24 +45,32 @@ class ProductService {
 
   async transformToProductForUpdate(req, product) {
     try {
-      const data = req.body;
-      if (req.file) {
-        data.images = await cloudinarySvc.singleFileUpload(
-          req.file.path,
-          "Products",
-        );
+      let images=[];
+       const data = req.body;
+     if (req.files) {
+      images=await cloudinarySvc.multipleFileUpload(req.files,'products')
       }
-      data.images = product.images;
 
+      data.images=[...images,...product.images]
+      data.updatedBy = req.loggedInUser._id;
+
+      // validating foregin key:brands , category
       if (!data.category || data.category === "" || data.category == "null") {
         data.category = null;
       }
 
-      if (!data.brands || data.brands === "" || data.brands == "null") {
-        data.brands = null;
+      if (!data.brand || data.brand === "" || data.brand == "null") {
+        data.brand = null;
       }
 
-      data.updatedBy = req.loggedInUser._id;
+      
+      if (!data.seller || data.seller === "" || data.seller == "null") {
+        data.seller = req.loggedInUser._id;
+      }
+
+      data.price=data.price*100;
+      data.afterDiscountAmount=data.price-data.price*data.discount/100;
+
       return data;
     } catch (exception) {
       throw exception;

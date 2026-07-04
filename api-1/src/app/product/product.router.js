@@ -24,11 +24,6 @@ productRouter.get("/front-list",productCtrl.frontlistAllProducts);
 productRouter.post(
   "/",
 
-  (req, res, next) => {
-    console.log("Product Hit");
-    next();
-  },
-
   auth([userRoles.ADMIN, userRoles.SELLER]),
 
   uploader().array("images"),
@@ -48,3 +43,4 @@ module.exports = productRouter;
 
 
   
+
