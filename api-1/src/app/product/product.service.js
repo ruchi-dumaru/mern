@@ -148,7 +148,8 @@ class ProductService {
         .skip(skip);
 
       const total = await ProductModel.countDocuments(filter);
-
+      console.log(total)
+console.log("data:",data)
       return {
         data,
         pagination: {
