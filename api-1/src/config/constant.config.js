@@ -19,7 +19,8 @@ const OrderStatus={
   PENDING:"pending",
   VERIFIED:"verified",
   CANCELLED:"cancelled",
-  DELIVERED:"completed"
+  DELIVERED:"completed",
+  CONFIRMED:"confirmed"
 }
 
 module.exports={

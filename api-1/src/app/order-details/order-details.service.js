@@ -193,6 +193,14 @@ class OrderDetailService {
     }
   }
 
+  async updateOrderDetailsByFilter(data,filter){
+    try{
+return await OrderDetailModel.updateMany(filter,{$set:data})
+    }catch(exception){
+      throw exception
+    }
+  }
+
 
 
 }

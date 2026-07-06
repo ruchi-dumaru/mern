@@ -2,7 +2,7 @@ const auth = require("../../middleware/auth.middleware");
 const bodyValidator = require("../../middleware/validator.middleware");
 const orderCtrl=require("../orders/order.controller")
 const orderRouter= require("express").Router()
-
+const Joi=require("joi");
 
 const orderCheckoutDTO=Joi.object({
   
@@ -12,5 +12,7 @@ const orderCheckoutDTO=Joi.object({
 
 })
 //checkout
-orderRouter.post("/checkout",auth(),bodyValidator(orderCheckoutDTO),orderCtrl.placeOrder)
-moudle.exports=orderRouter;
+orderRouter.post("/checkout",auth(),bodyValidator(orderCheckoutDTO),orderCtrl.placeOrder);
+orderRouter.get('/',auth(),orderCtrl.getMyOrders)
+orderRouter.get('/:id',auth(),orderCtrl.getOrderDetail)
+module.exports=orderRouter;

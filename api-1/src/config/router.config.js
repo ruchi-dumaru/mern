@@ -7,6 +7,7 @@ const categoryRouter = require("../app/category/category.router");
 const productRouter=require("../app/product/product.router");
 const userRouter = require("../app/user/user.router");
 const OrderDetailRouter = require("../app/order-details/order-details.router");
+const orderRouter = require("../app/orders/order.router");
 
 //app
 //endpoint/url/req/routing/url
