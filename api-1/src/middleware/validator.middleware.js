@@ -28,6 +28,7 @@ const bodyValidator = (rules) => {
        errBag[key]=error.message //this populate errBag
         })
       }
+      
       next({
         detail:errBag,
         code:400,

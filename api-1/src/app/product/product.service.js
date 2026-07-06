@@ -217,7 +217,7 @@ console.log("data:",data)
           "image",
           "role",
         ])
-
+console.log("dataof get:",data);
       return data;
     } catch (exception) {
       next(exception);

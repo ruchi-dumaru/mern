@@ -11,5 +11,11 @@ const CartDTO=Joi.object({
 })
 
 OrderDetailRouter.post("/add-to-cart",auth([userRoles.ADMIN,userRoles.CUSTOMER]),bodyValidator(CartDTO),orderDetailCtrl.addToCart);
+OrderDetailRouter.get("/my-cart",auth([userRoles.ADMIN,userRoles.CUSTOMER]),orderDetailCtrl.viewMyCart)
+
+
+
+//Remove from cart
+OrderDetailRouter.put('/update-my-cart',auth([userRoles.ADMIN,userRoles.CUSTOMER]),bodyValidator(CartDTO),orderDetailCtrl.updateMyCart)
 
 module.exports=OrderDetailRouter
