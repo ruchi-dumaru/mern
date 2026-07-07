@@ -100,13 +100,37 @@ class OrderService {
           "image",
           "role",
         ])
-        .sort({ createdAt: "desc" });
-
+        .sort({ createdAt: "desc" })
+    
       return data;
     } catch (exception) {
       throw exception;
     }
   }
+
+ async getSingleRowByFilter (filter){
+    try{
+ const data = await OrderModel.findOne(filter)
+       .populate("buyer", [
+          "_id",
+          "name",
+          "email",
+          "address",
+          "phone",
+          "dob",
+          "status",
+          "gender",
+          "image",
+          "role",
+        ])
+         console.log(data)
+      return data;
+   
+    }catch(exception){
+      throw exception
+    }
+  }
+
 }
 
 module.exports = new OrderService();

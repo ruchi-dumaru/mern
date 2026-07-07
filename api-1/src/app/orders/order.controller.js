@@ -107,12 +107,34 @@ class OrderController {
         };
       }
 
-      const{data} =await orderDetailsSvc.getAllRowsByFilter(filter)
+      const { data } = await orderDetailsSvc.getAllRowsByFilter(filter);
       res.json({
-        data:data,
-        message:"Your order Detail",
-        status:"ORDER_DETAIL"
-      })
+        data: data,
+        message: "Your order Detail",
+        status: "ORDER_DETAIL",
+      });
+    } catch (exception) {
+      next(exception);
+    }
+  }
+
+  async initializeKhaltiPayment(req, res, next) { 
+    try {
+      
+      const loggedInUser = req.loggedInUser;
+      // console.log("code",req.params.orderCode)
+      const orderDetail = await orderService.getSingleRowByFilter({
+        buyer:loggedInUser._id,
+        orderCode: req.params.orderCode,
+      });
+      console.log("order detail:",orderDetail)
+      if(!orderDetail){
+        throw{
+          code:422,
+          message:"Order not found",
+          status:"ORDER_NOT_FOUND"
+        }
+      }
     } catch (exception) {
       next(exception);
     }
