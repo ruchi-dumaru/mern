@@ -1,3 +1,4 @@
+const { AppConfig } = require("../../config/config");
 const { OrderStatus, userRoles } = require("../../config/constant.config");
 const orderDetailsSvc = require("../order-details/order-details.service");
 const orderService = require("./order.service");
@@ -135,6 +136,57 @@ class OrderController {
           status:"ORDER_NOT_FOUND"
         }
       }
+
+      // payment init make request with khalti server
+      
+      // const khaltiResponse = await fetch(`${AppConfig.khaltiBaseUrl + "epayment/initiate"}`,{
+      //   method:"POST",
+      //   headers:{
+      //     "Authorization":`Key ${AppConfig.khaltiSecretKey}`,
+      //     "Content-Type":"application/json"
+      //   },
+      //   body:JSON.stringify({
+      //     return_url:`${AppConfig.frontendUrl}/khalti-success`,
+      //     website_url:`${AppConfig.frontendUrl}`,
+      //     amount:orderDetail.total,
+      //     purchase_order_id:orderDetail.orderCode,
+      //     purchase_order_name:"Nexsora-Commerce-Cart-Payment",
+      //   })
+      // })
+
+      const khaltiResponse = await fetch(`${AppConfig.khaltiBaseUrl}epayment/initiate/`, {
+  method: "POST",
+  headers: {
+    "Authorization": `Key ${AppConfig.khaltiSecretKey}`,
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    return_url: `${AppConfig.frontendUrl}/khalti-success`,
+    website_url: `${AppConfig.frontendUrl}`,
+    amount: Math.round(orderDetail.total * 100), // Converted to Paisa
+    purchase_order_id: orderDetail.orderCode,
+    purchase_order_name: "Nexsora-Commerce-Cart-Payment",
+    customer_info: { // Added mandatory customer details
+      name: loggedInUser.name || "Test User",
+      email: loggedInUser.email || "test@example.com",
+      phone: loggedInUser.phone || "9800000000" 
+    }
+  })
+});
+
+
+
+
+console.log(AppConfig.khaltiBaseUrl);
+console.log(AppConfig.khaltiSecretKey);
+      let response=await khaltiResponse.json();
+      console.log(response);
+      res.json({
+        res:response,
+        message:"Pay with khalti",
+        status:"PAY_WITH_KHALTI",
+        options:null
+      })
     } catch (exception) {
       next(exception);
     }

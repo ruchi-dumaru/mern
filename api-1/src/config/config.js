@@ -35,7 +35,11 @@ const EmailConfig = {
 
 const AppConfig={
   frontendUrl: process.env.FRONTEND_URL,
-  jwtSecret:process.env.JWT_SECRET
+  jwtSecret:process.env.JWT_SECRET,
+
+
+  khaltiSecretKey:process.env.KHALTI_SECRET_KEY,
+  khaltiBaseUrl :process.env.KHALTI_BASE_URL
 }
 
 module.exports = {
