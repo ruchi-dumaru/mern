@@ -1,8 +1,10 @@
 import { createRoot } from "react-dom/client";
-import HomePage from "./pages/HomePage";
-import "./assets/css/global.css"
-
+import "./assets/css/global.css";
+import RouterConfig from "./config/router.config";
+import { StrictMode } from "react";
 
 createRoot(document.getElementById("root")!).render(
-  <HomePage/>
+  <StrictMode>
+    <RouterConfig />
+  </StrictMode>,
 );
