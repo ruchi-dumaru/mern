@@ -1,54 +1,84 @@
 import { NavLink } from "react-router";
 import { LabelComponent } from "../../components/form/LabelComponent";
-import { useState, type BaseSyntheticEvent } from "react";
+import { Controller, useForm } from "react-hook-form";
 
-export interface ICredentials{
-  email:string,
-  password:string
+export interface ICredentials {
+  email: string;
+  password: string;
 }
 
 const LoginPage = () => {
-  document.title="Login Page"
+  document.title = "Login Page";
 
-  const [credentials,setCredentials]=useState<ICredentials>({
-    email:"",
-    password:""
-  })
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
+  const submitEvent = (data: ICredentials) => {
+    console.log(data);
+  };
 
-  const handleInputChange=(e:BaseSyntheticEvent)=>{
-                const name=e.target.name
-                setCredentials({
-                  ...credentials,
-                  [name]:e.target.value
-                })
-              }
-
-
-console.log(credentials);
+  console.log(register("email"));
   return (
     <>
       <h2 className="flex flex-col text-start underline font-bold text-4xl underline-offset-2">
         Login Page
       </h2>
       <div className="w-full mt-3 ">
-        <form action="" className="">
-          <div className="flex gap-2 flex-col  w-full items-center">
+        <form action="" onSubmit={handleSubmit(submitEvent)} className="">
+          <div className="flex gap-2 flex-col  w-full ">
             <LabelComponent
               htmlFor="username"
               value="username(email):"
               className="w-full"
             />
 
-            <input
-              type="email"
+            <Controller
+              control={control}
               name="email"
-              onChange={handleInputChange}
+              rules={{required:true}}
+              render={({field}) => (
+                <>
+                  <input
+                    type="email"
+                    className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
+                    {...field}
+                  />
+
+                  {errors?.email ? (
+                    <span className="text-sm text-red-900 italic text-start">
+                      Email is required
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
+            />
+
+            {/* <input
+              type="email"
+              {...register("email", { required: true })}
               className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
             />
+            {errors?.email ? (
+              <span className="text-sm text-red-900 italic text-start">
+                Email is required
+              </span>
+            ) : (
+              <></>
+            )} */}
           </div>
 
-          <div className="flex gap-2 flex-col  w-full items-center">
+          <div className="flex gap-2 flex-col  w-full ">
             <div className="flex items-center justify-between w-full mt-3 ">
               <LabelComponent
                 htmlFor="password"
@@ -64,12 +94,42 @@ console.log(credentials);
               </NavLink>
             </div>
 
-            <input
-              type="password"
+            <Controller
+              control={control}
               name="password"
-              onChange={handleInputChange}
-              className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
+              rules={{required:true}}
+              render={({field}) => (
+                <>
+                  <input
+                    type="password"
+                    className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
+                    {...field}
+                  />
+
+                  {errors?.password ? (
+                    <span className="text-sm text-red-900 italic text-start">
+                      Password is required
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
             />
+
+            {/* <input
+              type="password"
+              {...register("password", { required: true })}
+              className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
+            /> */}
+
+            {/* {errors?.password ? (
+              <span className="text-sm text-red-900 text-start italic">
+                Password is required
+              </span>
+            ) : (
+              <></>
+            )} */}
           </div>
 
           <div className="flex gap-10 mt-3 text-gray-400 font-medium ">

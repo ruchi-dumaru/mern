@@ -1,31 +1,252 @@
 import { NavLink } from "react-router";
+import { LabelComponent } from "../../components/form/LabelComponent";
+import { Controller, useForm } from "react-hook-form";
 
+export interface ICredentials {
+  email: string;
+  password: string;
+}
+
+//name,email,password,confirmPassword,role,image
 
 const RegisterPage = () => {
-   document.title="Register Page"
+  document.title = "Register Page";
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      role: "",
+      image: "",
+    },
+  });
+
+  const submitEvent = (data: ICredentials) => {
+    console.log(data);
+  };
+
   return (
     <>
-     
-          <h2 className="flex flex-col text-start underline font-bold text-4xl underline-offset-2">
-            Register Page
-          </h2>
-          <div className="w-full mt-3 ">
-            
+      <h2 className="flex flex-col text-start underline font-bold text-4xl underline-offset-2">
+        Register Page
+      </h2>
 
-            <div className="w-full flex items-center justify-center mt-2 text-gray-700 gap-1">
-              Already have an account?
+      <div className="w-full mt-3 ">
+        <form action="" onSubmit={handleSubmit(submitEvent)} className="">
+          <div className="flex gap-2 flex-col  w-full ">
+            <LabelComponent
+              htmlFor="username"
+              value="Name:"
+              className="w-full"
+            />
+
+            <Controller
+              control={control}
+              name="name"
+              render={(field) => (
+                <>
+                  <input
+                    type="text"
+                    className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
+                    {...field}
+                  />
+
+                  {errors?.name ? (
+                    <span className="text-sm text-red-900 italic text-start">
+                      Name is required
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
+            />
+          </div>
+
+          <div className="flex gap-2 flex-col  w-full ">
+            <LabelComponent
+              htmlFor="username"
+              value="Email:"
+              className="w-full"
+            />
+
+            <Controller
+              control={control}
+              name="email"
+              render={(field) => (
+                <>
+                  <input
+                    type="email"
+                    className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
+                    {...field}
+                  />
+
+                  {errors?.email ? (
+                    <span className="text-sm text-red-900 italic text-start">
+                      Email is required
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
+            />
+          </div>
+
+          <div className="flex gap-2 flex-col  w-full ">
+            <div className="flex items-center justify-between w-full mt-3 ">
+              <LabelComponent
+                htmlFor="password"
+                value="Password:"
+                className="flex-1"
+              />
+
               <NavLink
-                to="/"
-                className=" text-gray-700 hover:underline hover:text-gray-400 font-medium"
+                to="/forget"
+                className="text-black underline hover:text-gray-700"
               >
-                Login Here
+                Forget Password?
               </NavLink>
             </div>
+
+            <Controller
+              control={control}
+              name="password"
+              render={(field) => (
+                <>
+                  <input
+                    type="password"
+                    className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
+                    {...field}
+                  />
+
+                  {errors?.password ? (
+                    <span className="text-sm text-red-900 italic text-start">
+                      Password is required
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
+            />
           </div>
-        
+
+          <div className="flex gap-2 flex-col  w-full ">
+            <div className="flex items-center justify-between w-full mt-3 ">
+              <LabelComponent
+                htmlFor="password"
+                value="Confirm Password:"
+                className="flex-1"
+              />
+            </div>
+
+            <Controller
+              control={control}
+              name="confirmPassword"
+              render={(field) => (
+                <>
+                  <input
+                    type="password"
+                    className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
+                    {...field}
+                  />
+
+                  {errors?.password ? (
+                    <span className="text-sm text-red-900 italic text-start">
+                      Password must be same.
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
+            />
+          </div>
+
+          <div className="flex gap-2 flex-col  w-full ">
+            <div className="flex items-center justify-between w-full mt-3 ">
+              <LabelComponent htmlFor="role" value="Role:" className="flex-1" />
+            </div>
+
+            <Controller
+              control={control}
+              name="role"
+              render={(field) => (
+                <>
+                  <input
+                    type="radio"
+                    className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
+                    {...field}
+                  />
+                </>
+              )}
+            />
+          </div>
+
+      <div className="flex gap-2 flex-col  w-full ">
+            <LabelComponent
+              htmlFor="image"
+              value="Image:"
+              className="w-full"
+            />
+
+            <Controller
+              control={control}
+              name="image"
+              render={(field) => (
+                <>
+                  <input
+                    type="file"
+                    className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
+                    {...field}
+                  />
+
+                  {errors?.image ? (
+                    <span className="text-sm text-red-900 italic text-start">
+                      Image is required
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
+            />
+          </div>
+
+
+
+
+          <div className="flex gap-10 mt-3 text-gray-400 font-medium ">
+            <button className="bg-green-950 w-1/2 p-2 rounded-xl cursor-pointer hover:scale-95 transition duration-400">
+              login{" "}
+            </button>
+            <button className="bg-red-900 w-1/2 p-2 rounded-xl cursor-pointer hover:scale-95 transition duration-400">
+              Cancel{" "}
+            </button>
+          </div>
+        </form>
+
+        <div className="w-full mt-3 ">
+          <div className="w-full flex items-center justify-center mt-2 text-gray-700 gap-1">
+            Already have an account?
+            
+            <NavLink
+              to="/"
+              className=" text-gray-700 hover:underline hover:text-gray-400 font-medium"
+            >
+              Login Here
+            </NavLink>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
 
-
-export default RegisterPage
+export default RegisterPage;
