@@ -1,21 +1,26 @@
 import { createBrowserRouter } from "react-router";
 import { AuthRouter } from "../pages/auth/AuthRouter";
 import { RouterProvider } from "react-router/dom";
+import TestPage from "../pages/test/TestComponent";
 
 
 // import LoginPage from "../pages/auth/LoginPage";
 // import RegisterPage from "../pages/auth/RegisterPage";
 // import ForgetPasswordPage from "../pages/auth/ForgetPasswordPage";
-// import ProductListPage from "../pages/product/ProductListPage";
+import ProductListPage from "../pages/product/ProductListPage";
 
 
 const routerConfig = createBrowserRouter([
   // { path: "/", Component: LoginPage },
   // { path: "/register", Component: RegisterPage },
   // { path: "/forget", element: <ForgetPasswordPage /> },
-  // {path:"/productlist",Component:ProductListPage}
+  {path:"/productlist",Component:ProductListPage},
 
-  ...AuthRouter
+  ...AuthRouter,
+  {
+    path:"/test/:slug",
+    element:<TestPage/>
+  }
 ]);
 const RouterConfig = () => {
   return (

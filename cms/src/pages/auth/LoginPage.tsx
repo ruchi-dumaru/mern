@@ -1,8 +1,31 @@
 import { NavLink } from "react-router";
 import { LabelComponent } from "../../components/form/LabelComponent";
+import { useState, type BaseSyntheticEvent } from "react";
+
+export interface ICredentials{
+  email:string,
+  password:string
+}
 
 const LoginPage = () => {
   document.title="Login Page"
+
+  const [credentials,setCredentials]=useState<ICredentials>({
+    email:"",
+    password:""
+  })
+
+
+  const handleInputChange=(e:BaseSyntheticEvent)=>{
+                const name=e.target.name
+                setCredentials({
+                  ...credentials,
+                  [name]:e.target.value
+                })
+              }
+
+
+console.log(credentials);
   return (
     <>
       <h2 className="flex flex-col text-start underline font-bold text-4xl underline-offset-2">
@@ -19,6 +42,8 @@ const LoginPage = () => {
 
             <input
               type="email"
+              name="email"
+              onChange={handleInputChange}
               className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
             />
           </div>
@@ -41,6 +66,8 @@ const LoginPage = () => {
 
             <input
               type="password"
+              name="password"
+              onChange={handleInputChange}
               className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
             />
           </div>
