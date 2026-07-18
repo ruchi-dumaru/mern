@@ -1,12 +1,28 @@
 import { NavLink } from "react-router";
 import { LabelComponent } from "../../components/form/LabelComponent";
 import { Controller, useForm } from "react-hook-form";
-
-export interface ICredentials {
-  email: string;
-  password: string;
+import * as Yup from "yup";
+import { passwordRegex, rolesRegex } from "../../config/constants/regex";
+import { yupResolver } from "@hookform/resolvers/yup";
+export interface IRegisterData {
+  name: null | string;
+  email: null | string;
+  password: null | string;
+  confirmPassword: null | string;
+  role: null | string;
+  //eslint-disable-next-line
+  image: null | any;
 }
 
+const RegisterDTO = Yup.object({
+  name: Yup.string().min(3).max(50).required(),
+  email: Yup.string().email().required(),
+  password: Yup.string().matches(passwordRegex).required(),
+  confirmPassword: Yup.string().oneOf([Yup.ref("password")]),
+  role: Yup.string().matches(rolesRegex).default("customer"),
+  //eslint-disable-next-line
+  image: Yup.mixed().nullable(),
+});
 //name,email,password,confirmPassword,role,image
 
 const RegisterPage = () => {
@@ -24,9 +40,11 @@ const RegisterPage = () => {
       role: "",
       image: "",
     },
+    //eslint-disable-next-line
+    resolver: yupResolver(RegisterDTO) as any,
   });
 
-  const submitEvent = (data: ICredentials) => {
+  const submitEvent = (data: IRegisterData) => {
     console.log(data);
   };
 
@@ -48,7 +66,8 @@ const RegisterPage = () => {
             <Controller
               control={control}
               name="name"
-              render={(field) => (
+              rules={{ required: true }}
+              render={({ field }) => (
                 <>
                   <input
                     type="text"
@@ -56,13 +75,9 @@ const RegisterPage = () => {
                     {...field}
                   />
 
-                  {errors?.name ? (
-                    <span className="text-sm text-red-900 italic text-start">
-                      Name is required
-                    </span>
-                  ) : (
-                    <></>
-                  )}
+                  <span className="text-sm text-red-900 italic text-start">
+                    {errors?.name?.message}
+                  </span>
                 </>
               )}
             />
@@ -78,7 +93,8 @@ const RegisterPage = () => {
             <Controller
               control={control}
               name="email"
-              render={(field) => (
+              rules={{ required: true }}
+              render={({ field }) => (
                 <>
                   <input
                     type="email"
@@ -86,13 +102,9 @@ const RegisterPage = () => {
                     {...field}
                   />
 
-                  {errors?.email ? (
-                    <span className="text-sm text-red-900 italic text-start">
-                      Email is required
-                    </span>
-                  ) : (
-                    <></>
-                  )}
+                  <span className="text-sm text-red-900 italic text-start">
+                    {errors?.email?.message}
+                  </span>
                 </>
               )}
             />
@@ -117,7 +129,8 @@ const RegisterPage = () => {
             <Controller
               control={control}
               name="password"
-              render={(field) => (
+              rules={{ required: true }}
+              render={({ field }) => (
                 <>
                   <input
                     type="password"
@@ -125,13 +138,9 @@ const RegisterPage = () => {
                     {...field}
                   />
 
-                  {errors?.password ? (
-                    <span className="text-sm text-red-900 italic text-start">
-                      Password is required
-                    </span>
-                  ) : (
-                    <></>
-                  )}
+                  <span className="text-sm text-red-900 italic text-start">
+                    {errors?.password?.message}
+                  </span>
                 </>
               )}
             />
@@ -149,7 +158,8 @@ const RegisterPage = () => {
             <Controller
               control={control}
               name="confirmPassword"
-              render={(field) => (
+              rules={{ required: true }}
+              render={({ field }) => (
                 <>
                   <input
                     type="password"
@@ -157,13 +167,9 @@ const RegisterPage = () => {
                     {...field}
                   />
 
-                  {errors?.password ? (
-                    <span className="text-sm text-red-900 italic text-start">
-                      Password must be same.
-                    </span>
-                  ) : (
-                    <></>
-                  )}
+                  <span className="text-sm text-red-900 italic text-start">
+                    {errors?.confirmPassword?.message}
+                  </span>
                 </>
               )}
             />
@@ -177,7 +183,8 @@ const RegisterPage = () => {
             <Controller
               control={control}
               name="role"
-              render={(field) => (
+              rules={{ required: true }}
+              render={({ field }) => (
                 <>
                   <input
                     type="radio"
@@ -189,17 +196,14 @@ const RegisterPage = () => {
             />
           </div>
 
-      <div className="flex gap-2 flex-col  w-full ">
-            <LabelComponent
-              htmlFor="image"
-              value="Image:"
-              className="w-full"
-            />
+          <div className="flex gap-2 flex-col  w-full ">
+            <LabelComponent htmlFor="image" value="Image:" className="w-full" />
 
             <Controller
               control={control}
               name="image"
-              render={(field) => (
+              rules={{ required: true }}
+              render={({ field }) => (
                 <>
                   <input
                     type="file"
@@ -207,20 +211,13 @@ const RegisterPage = () => {
                     {...field}
                   />
 
-                  {errors?.image ? (
-                    <span className="text-sm text-red-900 italic text-start">
-                      Image is required
-                    </span>
-                  ) : (
-                    <></>
-                  )}
+                  <span className="text-sm text-red-900 italic text-start">
+                    {errors?.image?.message}
+                  </span>
                 </>
               )}
             />
           </div>
-
-
-
 
           <div className="flex gap-10 mt-3 text-gray-400 font-medium ">
             <button className="bg-green-950 w-1/2 p-2 rounded-xl cursor-pointer hover:scale-95 transition duration-400">
@@ -235,7 +232,6 @@ const RegisterPage = () => {
         <div className="w-full mt-3 ">
           <div className="w-full flex items-center justify-center mt-2 text-gray-700 gap-1">
             Already have an account?
-            
             <NavLink
               to="/"
               className=" text-gray-700 hover:underline hover:text-gray-400 font-medium"

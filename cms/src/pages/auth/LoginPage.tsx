@@ -1,11 +1,22 @@
 import { NavLink } from "react-router";
 import { LabelComponent } from "../../components/form/LabelComponent";
 import { Controller, useForm } from "react-hook-form";
+import * as Yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup";
+import { passwordRegex } from "../../config/constants/regex";
+
 
 export interface ICredentials {
   email: string;
   password: string;
 }
+
+
+const CredentialDTO= Yup.object({
+  email:Yup.string().email().required(),
+  password:Yup.string().matches(passwordRegex).required("Password is mandatory")
+})
+
 
 const LoginPage = () => {
   document.title = "Login Page";
@@ -20,6 +31,7 @@ const LoginPage = () => {
       email: "",
       password: "",
     },
+    resolver:yupResolver(CredentialDTO)
   });
 
   const submitEvent = (data: ICredentials) => {
@@ -44,7 +56,7 @@ const LoginPage = () => {
             <Controller
               control={control}
               name="email"
-              rules={{required:true}}
+              rules={{required:true}}//used for internal validation
               render={({field}) => (
                 <>
                   <input
@@ -53,13 +65,11 @@ const LoginPage = () => {
                     {...field}
                   />
 
-                  {errors?.email ? (
+                 
                     <span className="text-sm text-red-900 italic text-start">
-                      Email is required
+                     {errors?.email?.message}
                     </span>
-                  ) : (
-                    <></>
-                  )}
+                 
                 </>
               )}
             />
@@ -106,13 +116,9 @@ const LoginPage = () => {
                     {...field}
                   />
 
-                  {errors?.password ? (
-                    <span className="text-sm text-red-900 italic text-start">
-                      Password is required
+                  <span className="text-sm text-red-900 italic text-start">
+                     {errors?.password?.message}
                     </span>
-                  ) : (
-                    <></>
-                  )}
                 </>
               )}
             />
