@@ -1,21 +1,10 @@
 import { NavLink } from "react-router";
 import { LabelComponent } from "../../components/form/LabelComponent";
-import { Controller, useForm } from "react-hook-form";
-import * as Yup from "yup"
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { passwordRegex } from "../../config/constants/regex";
+import { type ICredentials,CredentialDTO } from "./Auth.contract";
+import { EmailInputComponent, PasswordInputComponent } from "../../components/form/InputComponent";
 
-
-export interface ICredentials {
-  email: string;
-  password: string;
-}
-
-
-const CredentialDTO= Yup.object({
-  email:Yup.string().email().required(),
-  password:Yup.string().matches(passwordRegex).required("Password is mandatory")
-})
 
 
 const LoginPage = () => {
@@ -53,7 +42,13 @@ const LoginPage = () => {
               className="w-full"
             />
 
-            <Controller
+
+<EmailInputComponent
+              control={control}
+              name="email"
+              errorMessage={errors?.email?.message}
+            />
+            {/* <Controller
               control={control}
               name="email"
               rules={{required:true}}//used for internal validation
@@ -72,7 +67,7 @@ const LoginPage = () => {
                  
                 </>
               )}
-            />
+            /> */}
 
             {/* <input
               type="email"
@@ -104,24 +99,7 @@ const LoginPage = () => {
               </NavLink>
             </div>
 
-            <Controller
-              control={control}
-              name="password"
-              rules={{required:true}}
-              render={({field}) => (
-                <>
-                  <input
-                    type="password"
-                    className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
-                    {...field}
-                  />
-
-                  <span className="text-sm text-red-900 italic text-start">
-                     {errors?.password?.message}
-                    </span>
-                </>
-              )}
-            />
+           <PasswordInputComponent control={control} name="password"  errorMessage={errors?.password?.message}/>
 
             {/* <input
               type="password"
@@ -136,6 +114,8 @@ const LoginPage = () => {
             ) : (
               <></>
             )} */}
+
+
           </div>
 
           <div className="flex gap-10 mt-3 text-gray-400 font-medium ">
@@ -163,8 +143,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
-{
-  /*
-   */
-}

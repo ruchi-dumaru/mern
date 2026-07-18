@@ -1,28 +1,14 @@
 import { NavLink } from "react-router";
 import { LabelComponent } from "../../components/form/LabelComponent";
 import { Controller, useForm } from "react-hook-form";
-import * as Yup from "yup";
-import { passwordRegex, rolesRegex } from "../../config/constants/regex";
+import { RegisterDTO ,type IRegisterData} from "./Auth.contract";
 import { yupResolver } from "@hookform/resolvers/yup";
-export interface IRegisterData {
-  name: null | string;
-  email: null | string;
-  password: null | string;
-  confirmPassword: null | string;
-  role: null | string;
-  //eslint-disable-next-line
-  image: null | any;
-}
+import {
+  EmailInputComponent,
+  TextInputComponent,
+  PasswordInputComponent,
+} from "../../components/form/InputComponent";
 
-const RegisterDTO = Yup.object({
-  name: Yup.string().min(3).max(50).required(),
-  email: Yup.string().email().required(),
-  password: Yup.string().matches(passwordRegex).required(),
-  confirmPassword: Yup.string().oneOf([Yup.ref("password")]),
-  role: Yup.string().matches(rolesRegex).default("customer"),
-  //eslint-disable-next-line
-  image: Yup.mixed().nullable(),
-});
 //name,email,password,confirmPassword,role,image
 
 const RegisterPage = () => {
@@ -63,50 +49,24 @@ const RegisterPage = () => {
               className="w-full"
             />
 
-            <Controller
+            <TextInputComponent
               control={control}
               name="name"
-              rules={{ required: true }}
-              render={({ field }) => (
-                <>
-                  <input
-                    type="text"
-                    className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
-                    {...field}
-                  />
-
-                  <span className="text-sm text-red-900 italic text-start">
-                    {errors?.name?.message}
-                  </span>
-                </>
-              )}
+              errorMessage={errors?.name?.message}
             />
           </div>
 
           <div className="flex gap-2 flex-col  w-full ">
             <LabelComponent
-              htmlFor="username"
+              htmlFor="email"
               value="Email:"
               className="w-full"
             />
 
-            <Controller
+            <EmailInputComponent
               control={control}
               name="email"
-              rules={{ required: true }}
-              render={({ field }) => (
-                <>
-                  <input
-                    type="email"
-                    className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
-                    {...field}
-                  />
-
-                  <span className="text-sm text-red-900 italic text-start">
-                    {errors?.email?.message}
-                  </span>
-                </>
-              )}
+              errorMessage={errors?.email?.message}
             />
           </div>
 
@@ -126,52 +86,26 @@ const RegisterPage = () => {
               </NavLink>
             </div>
 
-            <Controller
+            <PasswordInputComponent
               control={control}
               name="password"
-              rules={{ required: true }}
-              render={({ field }) => (
-                <>
-                  <input
-                    type="password"
-                    className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
-                    {...field}
-                  />
-
-                  <span className="text-sm text-red-900 italic text-start">
-                    {errors?.password?.message}
-                  </span>
-                </>
-              )}
+              errorMessage={errors?.password?.message}
             />
           </div>
 
           <div className="flex gap-2 flex-col  w-full ">
             <div className="flex items-center justify-between w-full mt-3 ">
               <LabelComponent
-                htmlFor="password"
-                value="Confirm Password:"
+                htmlFor="confirmPassword"
+                value="Re-Password:"
                 className="flex-1"
               />
             </div>
 
-            <Controller
+            <PasswordInputComponent
               control={control}
-              name="confirmPassword"
-              rules={{ required: true }}
-              render={({ field }) => (
-                <>
-                  <input
-                    type="password"
-                    className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
-                    {...field}
-                  />
-
-                  <span className="text-sm text-red-900 italic text-start">
-                    {errors?.confirmPassword?.message}
-                  </span>
-                </>
-              )}
+              name="confirmPasssword"
+              errorMessage={errors?.confirmPassword?.message}
             />
           </div>
 
