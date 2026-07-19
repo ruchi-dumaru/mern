@@ -1,9 +1,11 @@
-import { NavLink } from "react-router";
+
 import { LabelComponent } from "../../components/form/LabelComponent";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { type ICredentials,CredentialDTO } from "./Auth.contract";
 import { EmailInputComponent, PasswordInputComponent } from "../../components/form/InputComponent";
+import { RegisterLinkComponent } from "../../components/form/LinkComponent";
+import { ForgetPasswordLinkComponent } from './../../components/form/LinkComponent';
 
 
 
@@ -91,30 +93,13 @@ const LoginPage = () => {
                 className="flex-1"
               />
 
-              <NavLink
-                to="/forget"
-                className="text-black underline hover:text-gray-700"
-              >
-                Forget Password?
-              </NavLink>
+        
+              <ForgetPasswordLinkComponent to="/forget"  text="Forget Password?"/>
             </div>
 
            <PasswordInputComponent control={control} name="password"  errorMessage={errors?.password?.message}/>
 
-            {/* <input
-              type="password"
-              {...register("password", { required: true })}
-              className="  rounded p-2 w-full dark:border-gray-50 outline-none dark:bg-gray-300"
-            /> */}
-
-            {/* {errors?.password ? (
-              <span className="text-sm text-red-900 text-start italic">
-                Password is required
-              </span>
-            ) : (
-              <></>
-            )} */}
-
+          
 
           </div>
 
@@ -130,12 +115,8 @@ const LoginPage = () => {
 
         <div className="w-full flex items-center justify-center mt-2 text-gray-700 gap-1">
           Don't have an account?
-          <NavLink
-            to="/register"
-            className=" text-gray-700 hover:underline hover:text-gray-400 font-medium"
-          >
-            Register here
-          </NavLink>
+        
+          <RegisterLinkComponent to="/register" text="Register here"/>
         </div>
       </div>
     </>

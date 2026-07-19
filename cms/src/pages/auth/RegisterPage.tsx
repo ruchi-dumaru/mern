@@ -8,8 +8,8 @@ import {
   TextInputComponent,
   PasswordInputComponent,
 } from "../../components/form/InputComponent";
+import { LoginLinkComponent } from "../../components/form/LinkComponent";
 
-//name,email,password,confirmPassword,role,image
 
 const RegisterPage = () => {
   document.title = "Register Page";
@@ -166,12 +166,8 @@ const RegisterPage = () => {
         <div className="w-full mt-3 ">
           <div className="w-full flex items-center justify-center mt-2 text-gray-700 gap-1">
             Already have an account?
-            <NavLink
-              to="/"
-              className=" text-gray-700 hover:underline hover:text-gray-400 font-medium"
-            >
-              Login Here
-            </NavLink>
+
+            <LoginLinkComponent to='/' text="Login Here"/>
           </div>
         </div>
       </div>

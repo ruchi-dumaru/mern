@@ -1,33 +1,28 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import { AuthRouter } from "../pages/auth/AuthRouter";
-import { RouterProvider } from "react-router/dom";
-import TestPage from "../pages/test/TestComponent";
-
-
-// import LoginPage from "../pages/auth/LoginPage";
-// import RegisterPage from "../pages/auth/RegisterPage";
-// import ForgetPasswordPage from "../pages/auth/ForgetPasswordPage";
 import ProductListPage from "../pages/product/ProductListPage";
-
+import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
+import AdminLayoutPage from "../pages/layouts/AdminLayoutPage";
+import BannerListPage from "../pages/admin/banner/BannerListPage";
 
 const routerConfig = createBrowserRouter([
-  // { path: "/", Component: LoginPage },
-  // { path: "/register", Component: RegisterPage },
-  // { path: "/forget", element: <ForgetPasswordPage /> },
-  {path:"/productlist",Component:ProductListPage},
-
   ...AuthRouter,
+  { path: "/productlist", element: <ProductListPage /> },
   {
-    path:"/test/:slug",
-    element:<TestPage/>
-  }
+    path: "/admin",
+    element: <AdminLayoutPage />,
+    children: [
+      { index: true, element: <AdminDashboardPage /> },
+      {
+        path: "banners",
+        Component: BannerListPage,
+      },
+    ],
+  },
 ]);
+
 const RouterConfig = () => {
-  return (
-    <>
-      <RouterProvider router={routerConfig} />
-    </>
-  );
+  return <RouterProvider router={routerConfig} />;
 };
 
 export default RouterConfig;

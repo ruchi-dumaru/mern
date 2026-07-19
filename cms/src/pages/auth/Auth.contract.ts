@@ -7,6 +7,10 @@ export interface ICredentials {
   password: string;
 }
 
+export interface IForgetPasswordForm  {
+  email: string;
+};
+
 export const CredentialDTO = Yup.object({
   email: Yup.string().email().required(),
   password: Yup.string()

@@ -1,27 +1,63 @@
-import { Link } from "react-router"
 
-const ForgetPasswordPage=()=>{
-   document.title="Forgetpassword Page"
-return (<>
+import { useForm } from "react-hook-form";
+import { LabelComponent } from "../../components/form/LabelComponent";
+import { LoginLinkComponent } from "../../components/form/LinkComponent";
+import { EmailInputComponent } from "../../components/form/InputComponent";
 
-          <h2 className="flex flex-col text-start underline font-bold text-4xl underline-offset-2">
-            Forget your password? 
-          </h2>
-          <div className="w-full mt-3 ">
+import { type IForgetPasswordForm } from "./Auth.contract";
+
+const ForgetPasswordPage = () => {
+  document.title = "Forget Password Page";
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IForgetPasswordForm>({
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  const submitEvent = (data: IForgetPasswordForm) => {
+    console.log(data);
+  };
+
+  return (
+    <>
+      <h2 className="flex flex-col text-start underline font-bold text-4xl underline-offset-2">
+        Forget your password?
+      </h2>
+
+      <div className="w-full mt-3">
+        <form onSubmit={handleSubmit(submitEvent)}>
+          <div className="flex gap-2 flex-col w-full">
+            <LabelComponent htmlFor="email" value="Email:" className="w-full" />
+
             
 
-            <div className="w-full flex items-center justify-center mt-2 text-gray-700 gap-1">
-              Already have an account?
-              <Link
-                to="/"
-                className=" text-gray-700 hover:underline hover:text-gray-400 font-medium"
-              >
-                Login Here
-              </Link>
-            </div>
+            <EmailInputComponent control={control} name="email" errorMessage={errors?.email?.message}/>
           </div>
-        
-      </>)
-}
 
-export default ForgetPasswordPage
+          <div className="flex justify-start mt-3">
+            <button
+              type="submit"
+              className="bg-green-950 px-6 py-2 rounded-xl cursor-pointer hover:scale-98 transition duration-400 text-white"
+            >
+              Reset Password
+            </button>
+          </div>
+        </form>
+
+        <div className="w-full flex items-center justify-center mt-4 text-gray-700 gap-1">
+          Already have an account?
+        
+
+          <LoginLinkComponent to="/" text=" Login Here"/>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default ForgetPasswordPage;
