@@ -23,4 +23,7 @@
 
 
 - To get data from backend
-`pnpm i axios`
+`pnpm i axios
+pnpm i sooner
+pnpm i react-icons
+pnpm i iconify`

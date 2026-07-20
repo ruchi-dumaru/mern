@@ -11,7 +11,10 @@ import {
   SingleFileInputComponent,
 } from "../../components/form/InputComponent";
 import { LoginLinkComponent } from "../../components/form/LinkComponent";
-import axiosInstance from "../../config/axios.config";
+import  { postRequest } from "../../config/axios.config";
+import { notifyError, notifySuccess } from "../../utilities/helpers";
+import { useNavigate } from "react-router";
+
 
 const RegisterPage = () => {
   useEffect(() => {
@@ -21,7 +24,7 @@ const RegisterPage = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting },setError
   } = useForm({
     defaultValues: {
       name: "",
@@ -35,18 +38,40 @@ const RegisterPage = () => {
     resolver: yupResolver(RegisterDTO) as any,
   });
 
+
+  const navigate=useNavigate()
+
+
   const submitHandle = async (data: IRegisterData) => {
     try {
-      const response=await axiosInstance.post("auth/register",data,{
-        headers:{
-          "Content-Type":"multipart/form-data"
-        }
-      })
+      const response=await postRequest("auth/register",data,{file:true,auth:false})
       console.log(response)
       //response.data=>API response
-    } catch (exception) {
+
+      notifySuccess({
+        title:"Your account regiatered successfully...",
+        action:{
+          label:"Activate",
+          onClick:()=>navigate("/activate/"+ response.data.activateToken)
+        }
+
+      })
+
+      //eslint-disable-next-line
+    } catch (exception:any) {
+     notifyError({title:"Error while register...",description:"Your account cannot be create at this moment,please try again after some moment..."})
+      
       console.log(exception);
       //exception.resonse.data=>API response
+
+      //err handling to show msg in form
+      if(exception.statusCode === 400){
+        const keys=Object.keys(exception.error) as Array<keyof IRegisterData>
+
+        keys.forEach((key)=>{
+          setError(key,{message:exception.error[key]})
+        })
+      }
     }
   };
 

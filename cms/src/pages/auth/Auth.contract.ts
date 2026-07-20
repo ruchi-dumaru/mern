@@ -29,7 +29,7 @@ export interface IRegisterData {
 }
 
 export const RegisterDTO = Yup.object({
-  name: Yup.string().min(3).max(50).required(),
+  name: Yup.string().min(1).max(50).required(),
   email: Yup.string().email().required(),
   password: Yup.string().matches(passwordRegex).required(),
   confirmPassword: Yup.string().oneOf([Yup.ref("password")]),

@@ -4,6 +4,7 @@ import ProductListPage from "../pages/product/ProductListPage";
 import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
 import AdminLayoutPage from "../pages/layouts/AdminLayoutPage";
 import BannerListPage from "../pages/admin/banner/BannerListPage";
+import { Toaster } from "sonner";
 
 const routerConfig = createBrowserRouter([
   ...AuthRouter,
@@ -22,7 +23,12 @@ const routerConfig = createBrowserRouter([
 ]);
 
 const RouterConfig = () => {
-  return <RouterProvider router={routerConfig} />;
+  return (
+    <>
+    <Toaster theme="system"/>
+    <RouterProvider router={routerConfig} />;
+    </>
+  )
 };
 
 export default RouterConfig;
