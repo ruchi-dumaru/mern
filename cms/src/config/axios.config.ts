@@ -11,4 +11,15 @@ const axiosInstance=axios.create({
   }
 })
 
+
+axiosInstance.interceptors.response.use(
+  (response)=>{
+    return response?.data
+  },
+  (exception)=>{
+    const errorResponse={...exception?.response?.data,statusCode:exception.status}
+    throw errorResponse
+  }
+)
+
 export default axiosInstance
