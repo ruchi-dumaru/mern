@@ -104,10 +104,14 @@ const LoginPage = () => {
           </div>
 
           <div className="flex gap-10 mt-3 text-gray-400 font-medium ">
-            <button className="bg-green-950 w-1/2 p-2 rounded-xl cursor-pointer hover:scale-95 transition duration-400">
+            <button 
+            type="submit"
+            className="bg-green-950 w-1/2 p-2 rounded-xl cursor-pointer hover:scale-95 transition duration-400">
               login{" "}
             </button>
-            <button className="bg-red-900 w-1/2 p-2 rounded-xl cursor-pointer hover:scale-95 transition duration-400">
+            <button 
+            type="reset"
+            className="bg-red-900 w-1/2 p-2 rounded-xl cursor-pointer hover:scale-95 transition duration-400">
               Cancel{" "}
             </button>
           </div>

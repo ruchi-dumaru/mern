@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { passwordRegex,rolesRegex } from "../../config/constants/regex";
+import { passwordRegex,rolesRegex } from "../../constants/regex";
 
 
 export interface ICredentials {
@@ -14,7 +14,7 @@ export interface IForgetPasswordForm  {
 export const CredentialDTO = Yup.object({
   email: Yup.string().email().required(),
   password: Yup.string()
-    .matches(passwordRegex)
+    .matches(passwordRegex,"Your password is not strong enough")
     .required("Password is mandatory"),
 });
 

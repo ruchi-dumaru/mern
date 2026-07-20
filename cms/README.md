@@ -13,3 +13,14 @@
 
 - for validation :
 - `yup zod joi`(schema based features)
+
+## Backend (API endpoint)
+  -URL :baseUrl =>http://localhost:9006/
+  
+
+# FE to Bacend janea api call
+- Network to Fetch/XHR  
+
+
+- To get data from backend
+`pnpm i axios`
