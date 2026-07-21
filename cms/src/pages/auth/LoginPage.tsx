@@ -1,20 +1,24 @@
 import { LabelComponent } from "../../components/form/LabelComponent";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { type ICredentials, CredentialDTO } from "./Auth.contract";
+import {  CredentialDTO } from "./Auth.contract";
 import {
   EmailInputComponent,
   PasswordInputComponent,
 } from "../../components/form/InputComponent";
 import { RegisterLinkComponent } from "../../components/form/LinkComponent";
 import { ForgetPasswordLinkComponent } from "./../../components/form/LinkComponent";
-import { postRequest } from "../../config/axios.config";
+
+import useAuth from "../../hooks/auth.hook";
+
+// import Cookies from "js-cookie"
 
 const LoginPage = () => {
   document.title = "Login Page";
 
+  const { login } = useAuth();
+  // const authData=useContext(AuthContext)
   const {
-    register,
     control,
     handleSubmit,
     formState: { errors },
@@ -26,24 +30,22 @@ const LoginPage = () => {
     resolver: yupResolver(CredentialDTO),
   });
 
-  const submitEvent = async (data: ICredentials) => {
-    try {
-      const response = await postRequest("auth/login", data, {
-        file: false,
-        auth: false,
-      });
-      //cookie or localstorage
+  // console.log(loggedInUser)
 
-      console.log(response);
-      const expiryDate = new Date();
-      expiryDate.setDate(expiryDate.getDate() + 1);
-      // console.log(expiryTime.toISOString());
-      document.cookie = `token=${response.data};expires=${expiryDate};path=/;`;
-      //eslint-disable-next-line
-    } catch (exception: any) {
-      console.error(exception);
-    }
-  };
+  // const submitEvent = async (data: ICredentials) => {
+  //   try {
+  //     const response = await postRequest("auth/login", data, {
+  //       file: false,
+  //       auth: false,
+  //     });
+
+  //     localStorage.setItem("token", response.data);
+
+  //     //eslint-disable-next-line
+  //   } catch (exception: any) {
+  //     console.error(exception);
+  //   }
+  // };
 
   // console.log(register("email"));
   return (
@@ -52,7 +54,7 @@ const LoginPage = () => {
         Login Page
       </h2>
       <div className="w-full mt-3 ">
-        <form action="" onSubmit={handleSubmit(submitEvent)} className="">
+        <form action="" onSubmit={handleSubmit(login)} className="">
           <div className="flex gap-2 flex-col  w-full ">
             <LabelComponent
               htmlFor="username"

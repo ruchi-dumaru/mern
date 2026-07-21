@@ -2,12 +2,15 @@ import { useState } from "react";
 import { Outlet } from "react-router";
 import { ChevronDownIcon, MenuIcon, SearchIcon, UserIcon } from "../../assets/icons";
 import { SidebarComponent } from "../../components/sidebar/SidebarComponent";
+import useAuth from "../../hooks/auth.hook";
 
 const AdminLayoutPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
   const toggleSidebar = () => setCollapsed((prev) => !prev);
+
+  const {loggedInUser}=useAuth()
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
@@ -40,7 +43,7 @@ const AdminLayoutPage = () => {
                 >
                  <UserIcon/>
                   <div className="hidden text-left sm:block">
-                    <p className="text-sm font-semibold">Admin User</p>
+                    <p className="text-sm font-semibold">{loggedInUser?.name}</p>
                   </div>
                   <ChevronDownIcon />
                 </button>

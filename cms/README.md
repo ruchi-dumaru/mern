@@ -27,3 +27,6 @@
 pnpm i sooner
 pnpm i react-icons
 pnpm i iconify`
+
+#Cookie
+`pnpm i js-cookie`
