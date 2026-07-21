@@ -53,4 +53,10 @@ export const postRequest = async (url: string,data: any,
   });
 };
 
+export const getRequest = async (url: string, config = { params: {} }) => {
+  return await axiosInstance.get(url, {
+    params: { ...config.params },
+  });
+};
+
 export default axiosInstance;

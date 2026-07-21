@@ -1,13 +1,14 @@
-
 import { LabelComponent } from "../../components/form/LabelComponent";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { type ICredentials,CredentialDTO } from "./Auth.contract";
-import { EmailInputComponent, PasswordInputComponent } from "../../components/form/InputComponent";
+import { type ICredentials, CredentialDTO } from "./Auth.contract";
+import {
+  EmailInputComponent,
+  PasswordInputComponent,
+} from "../../components/form/InputComponent";
 import { RegisterLinkComponent } from "../../components/form/LinkComponent";
-import { ForgetPasswordLinkComponent } from './../../components/form/LinkComponent';
-
-
+import { ForgetPasswordLinkComponent } from "./../../components/form/LinkComponent";
+import { postRequest } from "../../config/axios.config";
 
 const LoginPage = () => {
   document.title = "Login Page";
@@ -16,20 +17,35 @@ const LoginPage = () => {
     register,
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm({
     defaultValues: {
       email: "",
       password: "",
     },
-    resolver:yupResolver(CredentialDTO)
+    resolver: yupResolver(CredentialDTO),
   });
 
-  const submitEvent = (data: ICredentials) => {
-    console.log(data);
+  const submitEvent = async (data: ICredentials) => {
+    try {
+      const response = await postRequest("auth/login", data, {
+        file: false,
+        auth: false,
+      });
+      //cookie or localstorage
+
+      console.log(response);
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + 1);
+      // console.log(expiryTime.toISOString());
+      document.cookie = `token=${response.data};expires=${expiryDate};path=/;`;
+      //eslint-disable-next-line
+    } catch (exception: any) {
+      console.error(exception);
+    }
   };
 
-  console.log(register("email"));
+  // console.log(register("email"));
   return (
     <>
       <h2 className="flex flex-col text-start underline font-bold text-4xl underline-offset-2">
@@ -44,8 +60,7 @@ const LoginPage = () => {
               className="w-full"
             />
 
-
-<EmailInputComponent
+            <EmailInputComponent
               control={control}
               name="email"
               errorMessage={errors?.email?.message}
@@ -93,25 +108,30 @@ const LoginPage = () => {
                 className="flex-1"
               />
 
-        
-              <ForgetPasswordLinkComponent to="/forget"  text="Forget Password?"/>
+              <ForgetPasswordLinkComponent
+                to="/forget"
+                text="Forget Password?"
+              />
             </div>
 
-           <PasswordInputComponent control={control} name="password"  errorMessage={errors?.password?.message}/>
-
-          
-
+            <PasswordInputComponent
+              control={control}
+              name="password"
+              errorMessage={errors?.password?.message}
+            />
           </div>
 
           <div className="flex gap-10 mt-3 text-gray-400 font-medium ">
-            <button 
-            type="submit"
-            className="bg-green-950 w-1/2 p-2 rounded-xl cursor-pointer hover:scale-95 transition duration-400">
+            <button
+              type="submit"
+              className="bg-green-950 w-1/2 p-2 rounded-xl cursor-pointer hover:scale-95 transition duration-400"
+            >
               login{" "}
             </button>
-            <button 
-            type="reset"
-            className="bg-red-900 w-1/2 p-2 rounded-xl cursor-pointer hover:scale-95 transition duration-400">
+            <button
+              type="reset"
+              className="bg-red-900 w-1/2 p-2 rounded-xl cursor-pointer hover:scale-95 transition duration-400"
+            >
               Cancel{" "}
             </button>
           </div>
@@ -119,8 +139,7 @@ const LoginPage = () => {
 
         <div className="w-full flex items-center justify-center mt-2 text-gray-700 gap-1">
           Don't have an account?
-        
-          <RegisterLinkComponent to="/register" text="Register here"/>
+          <RegisterLinkComponent to="/register" text="Register here" />
         </div>
       </div>
     </>

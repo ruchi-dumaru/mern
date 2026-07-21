@@ -45,14 +45,17 @@ const RegisterPage = () => {
   const submitHandle = async (data: IRegisterData) => {
     try {
       const response=await postRequest("auth/register",data,{file:true,auth:false})
-      console.log(response)
+      console.log("Full API Response:",response)
       //response.data=>API response
 
+
+     
       notifySuccess({
         title:"Your account regiatered successfully...",
         action:{
           label:"Activate",
-          onClick:()=>navigate("/activate/"+ response.data.activateToken)
+         //eslint-disable-next-line
+          onClick:()=>navigate("/activate/"+ (response as any).activationToken)
         }
 
       })
@@ -71,7 +74,7 @@ const RegisterPage = () => {
         keys.forEach((key)=>{
           setError(key,{message:exception.error[key]})
         })
-      }
+      } 
     }
   };
 
