@@ -3,6 +3,7 @@ import { LoadingSpinner } from "../../components/ui/spinner";
 import { useEffect } from "react";
 import { getRequest } from "../../config/axios.config";
 import { notifyError, notifySuccess } from "../../utilities/helpers";
+import useAuth from "../../hooks/auth.hook";
 
 export default function ActivatePage() {
   //
@@ -28,6 +29,17 @@ export default function ActivatePage() {
       navigate("/");
     }
   };
+
+
+  const {loggedInUser}=useAuth()
+  useEffect(()=>{
+    if(loggedInUser){
+      notifySuccess({title:"You are already logged in..."})
+ navigate("/"+loggedInUser.role)
+    }
+  },[loggedInUser])
+
+
   useEffect(() => {
     //api call
 

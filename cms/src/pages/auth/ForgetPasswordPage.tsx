@@ -5,9 +5,15 @@ import { LoginLinkComponent } from "../../components/form/LinkComponent";
 import { EmailInputComponent } from "../../components/form/InputComponent";
 
 import { type IForgetPasswordForm } from "./Auth.contract";
+import useAuth from "../../hooks/auth.hook";
+import { useEffect } from "react";
+import { notifySuccess } from "../../utilities/helpers";
+import { useNavigate } from "react-router";
 
 const ForgetPasswordPage = () => {
   document.title = "Forget Password Page";
+
+  const navigate=useNavigate()
 
   const {
     control,
@@ -22,6 +28,15 @@ const ForgetPasswordPage = () => {
   const submitEvent = (data: IForgetPasswordForm) => {
     console.log(data);
   };
+
+  
+  const {loggedInUser}=useAuth()
+    useEffect(()=>{
+      if(loggedInUser){
+        notifySuccess({title:"You are already logged in..."})
+   navigate("/"+loggedInUser.role)
+      }
+    },[loggedInUser])
 
   return (
     <>

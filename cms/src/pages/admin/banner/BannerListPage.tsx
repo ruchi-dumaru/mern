@@ -1,6 +1,9 @@
+
 import { useMemo, useState } from "react";
-import { Link } from "react-router";
 import BannerTable from "../../../components/banner/BannerTable";
+import { BreadCrumbComponent } from "../page-settings/Breadcrumb";
+import { PageTitle } from "../page-settings/PageTitle";
+import { PageSearch } from "../page-settings/PageSearch";
 
 type BannerItem = {
   id: number;
@@ -61,14 +64,19 @@ export default function BannerListPage() {
 
   const filteredBanners = useMemo(() => {
     const query = search.toLowerCase();
+
     return allBanners.filter((banner) =>
       [banner.title, banner.status, banner.url].some((value) =>
-        value.toLowerCase().includes(query),
-      ),
+        value.toLowerCase().includes(query)
+      )
     );
   }, [search]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredBanners.length / PAGE_SIZE));
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredBanners.length / PAGE_SIZE)
+  );
+
   const safePage = Math.min(page, totalPages);
 
   const paginatedBanners = useMemo(() => {
@@ -82,51 +90,33 @@ export default function BannerListPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <nav className="text-sm text-slate-500">
-            <Link to="/admin" className="text-slate-600 hover:text-slate-900">
-              Admin
-            </Link>
-            <span className="mx-2">/</span>
-            <Link
-              to="/admin/banners"
-              className="text-slate-600 hover:text-slate-900"
-            >
-              Banners
-            </Link>
-          </nav>
-          <h1 className="mt-2 text-2xl font-bold text-slate-800">
-            Banner List
-          </h1>
-        </div>
+      <BreadCrumbComponent
+        links={[
+          {
+            title: "Banner Management",
+            url: "/admin/banner",
+          },
+          {
+            title: "Banner Listing",
+          },
+        ]}
+      />
 
-        <Link
-          to="/admin/banners/create"
-          className="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
-        >
-          + Create Banner
-        </Link>
-      </div>
+      <PageTitle
+        title="Banner Listing Page"
+        createBtn={{
+          title: "Create Banner",
+          url: "/admin/banner/create",
+        }}
+      />
 
       <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="w-full sm:w-72">
-            <input
-              type="text"
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-                setPage(1);
-              }}
-              placeholder="Search banners"
-              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-slate-400"
-            />
-          </div>
-          <p className="text-sm text-slate-500">
-            {filteredBanners.length} items found
-          </p>
-        </div>
+        <PageSearch
+          search={search}
+          setSearch={setSearch}
+          setPage={setPage}
+          totalItems={filteredBanners.length}
+        />
 
         <BannerTable
           banners={paginatedBanners}

@@ -10,13 +10,17 @@ import { RegisterLinkComponent } from "../../components/form/LinkComponent";
 import { ForgetPasswordLinkComponent } from "./../../components/form/LinkComponent";
 
 import useAuth from "../../hooks/auth.hook";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+import { notifySuccess } from "../../utilities/helpers";
 
 // import Cookies from "js-cookie"
 
 const LoginPage = () => {
   document.title = "Login Page";
+  const navigate=useNavigate()
 
-  const { login } = useAuth();
+  const { login ,loggedInUser} = useAuth();
   // const authData=useContext(AuthContext)
   const {
     control,
@@ -30,6 +34,13 @@ const LoginPage = () => {
     resolver: yupResolver(CredentialDTO),
   });
 
+
+  useEffect(()=>{
+    if(loggedInUser){
+      notifySuccess({title:"You are already logged in..."})
+ navigate("/"+loggedInUser.role)
+    }
+  },[loggedInUser])
   // console.log(loggedInUser)
 
   // const submitEvent = async (data: ICredentials) => {

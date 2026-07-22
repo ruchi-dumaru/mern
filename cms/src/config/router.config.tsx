@@ -1,34 +1,53 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { AuthRouter } from "../pages/auth/AuthRouter";
 import ProductListPage from "../pages/product/ProductListPage";
-import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
-import AdminLayoutPage from "../pages/layouts/AdminLayoutPage";
-import BannerListPage from "../pages/admin/banner/BannerListPage";
 import { Toaster } from "sonner";
+import useAuth from "../hooks/auth.hook";
+import { useEffect, useState } from "react";
+import { LoadingSpinner } from "../components/ui/spinner";
+import { AdminRouter } from "../pages/admin/AdminRouter";
 
 const routerConfig = createBrowserRouter([
   ...AuthRouter,
   { path: "/productlist", element: <ProductListPage /> },
-  {
-    path: "/admin",
-    element: <AdminLayoutPage />,
-    children: [
-      { index: true, element: <AdminDashboardPage /> },
-      {
-        path: "banners",
-        Component: BannerListPage,
-      },
-    ],
-  },
+  ...AdminRouter
 ]);
 
 const RouterConfig = () => {
+  const { loading, setLoading } = useState<boolean>(true);
+  const {getLoggedInUser}=useAuth()
+
+
+  const loadLoggedInUser=async ()=>{
+    try{
+await getLoggedInUser()
+    }catch(exception){
+      console.error(exception)
+    }
+    finally{
+      setLoading(false)
+    }
+  }
+  useEffect(() => {
+loadLoggedInUser()
+  }, []);
+
+
+  // const {loggedInUser}=useAuth()
+  // console.log({loggedInUser})
   return (
     <>
-    <Toaster theme="system"/>
-    <RouterProvider router={routerConfig} />;
+      {loading ? (
+      <div className="flex h-screen w-full items-center justify-center"> <LoadingSpinner /></div>
+
+      ) : (
+        <>
+          <Toaster theme="system" />
+          <RouterProvider router={routerConfig} />;
+        </>
+      )}
     </>
-  )
+  );
 };
 
 export default RouterConfig;

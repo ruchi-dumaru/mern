@@ -14,6 +14,7 @@ import { LoginLinkComponent } from "../../components/form/LinkComponent";
 import  { postRequest } from "../../config/axios.config";
 import { notifyError, notifySuccess } from "../../utilities/helpers";
 import { useNavigate } from "react-router";
+import useAuth from "../../hooks/auth.hook";
 
 
 const RegisterPage = () => {
@@ -78,6 +79,14 @@ const RegisterPage = () => {
     }
   };
 
+
+  const {loggedInUser}=useAuth()
+  useEffect(()=>{
+    if(loggedInUser){
+      notifySuccess({title:"You are already logged in..."})
+ navigate("/"+loggedInUser.role)
+    }
+  },[loggedInUser])
 
   //   return (
   //     <div className=" min-h-screen flex items-center justify-center p-6 ">

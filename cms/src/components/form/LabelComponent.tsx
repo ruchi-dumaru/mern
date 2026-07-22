@@ -9,7 +9,7 @@ export const LabelComponent = ({ htmlFor, value, className }: Readonly<ILabelPro
     <>
       <label
         htmlFor={htmlFor}
-        className={` text-gray-950 font-medium dark:text-gray-100 ${className}`}
+        className={` text-gray-950 font-medium dark:text-slate-900" ${className}`}
       >
         {value}
       </label>
