@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router";
-import { ChevronDownIcon, MenuIcon, SearchIcon, UserIcon } from "../../assets/icons";
+import { ChevronDownIcon, MenuIcon, SearchIcon } from "../../assets/icons";
 import { SidebarComponent } from "../../components/sidebar/SidebarComponent";
 import useAuth from "../../hooks/auth.hook";
 import { useNavigate } from "react-router";
@@ -8,19 +8,22 @@ import { useNavigate } from "react-router";
 const AdminLayoutPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const toggleSidebar = () => setCollapsed((prev) => !prev);
 
-  const {loggedInUser}=useAuth()
+  const { loggedInUser } = useAuth();
+  const loggedInUserImage =
+    loggedInUser?.image?.optimizedUrl ||
+    loggedInUser?.image?.originalUrl ||
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(loggedInUser?.name ?? "User")}&background=0f172a&color=ffffff&bold=true&size=96`;
+  const isOnline = loggedInUser?.status?.toLowerCase?.() !== "offline";
 
-  useEffect (()=>{
-    
-    if(Object.entries(loggedInUser).length===0){
-      console.log(loggedInUser)
-      navigate('/')
+  useEffect(() => {
+    if (Object.entries(loggedInUser).length === 0) {
+      navigate("/");
     }
-  },[])
+  }, [loggedInUser, navigate]);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
@@ -51,9 +54,20 @@ const AdminLayoutPage = () => {
                   onClick={() => setProfileOpen((prev) => !prev)}
                   className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-2 py-2"
                 >
-                 <UserIcon/>
+                  <div className="relative h-8 w-8 overflow-hidden rounded-full bg-slate-200">
+                    <img
+                      src={loggedInUserImage}
+                      alt={loggedInUser?.name ?? "User"}
+                      className="h-full w-full object-cover"
+                    />
+                    <span
+                      className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${isOnline ? "bg-emerald-500" : "bg-slate-400"}`}
+                    />
+                  </div>
                   <div className="hidden text-left sm:block">
-                    <p className="text-sm font-semibold">{loggedInUser?.name}</p>
+                    <p className="text-sm font-semibold">
+                      {loggedInUser?.name}
+                    </p>
                   </div>
                   <ChevronDownIcon />
                 </button>
@@ -76,7 +90,7 @@ const AdminLayoutPage = () => {
           </header>
 
           <div className="p-4 sm:p-6 lg:p-8">
-            <Outlet context={{setCollapsed}} />
+            <Outlet context={{ setCollapsed }} />
           </div>
         </main>
       </div>
