@@ -3,6 +3,7 @@ import AdminLayoutPage from "../layouts/AdminLayoutPage";
 import AdminDashboardPage from "./AdminDashboardPage"
 import BannerListPage from "./banner/BannerListPage";
 import BannerCreatePage from "./banner/BannerCreatePage";
+import ChatPage from "../chat/ChatPage";
 export const AdminRouter=[
    {
     path: "/admin",
@@ -15,7 +16,9 @@ export const AdminRouter=[
       },
       {
         path:"banner/create",Component:BannerCreatePage
-      }
+      },
+      {path:"chat",Component:ChatPage}
+
     ],
   },
 ]

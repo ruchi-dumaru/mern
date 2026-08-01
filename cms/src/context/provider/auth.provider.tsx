@@ -21,6 +21,8 @@ const AuthProvider = ({ children }: Readonly<{ children: ReactNode }>) => {
     } catch (exception) {
       console.log("Auth provide:", exception);
       //todo
+      setLoggedInuser({} as IUserProfile)
+      localStorage.removeItem("token")
     }
   };
   const login = async (credentials: ICredentials): Promise<void> => {

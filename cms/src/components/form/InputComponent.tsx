@@ -6,6 +6,7 @@ interface ITextInputComponentProps {
   control: any;
   name: string;
   errorMessage?: null | string;
+  type?:"text"|"url"|"tel"|"number"|"email"
 }
 
 interface ISingleOptionType {
@@ -21,6 +22,7 @@ export const TextInputComponent = ({
   control,
   name,
   errorMessage,
+  type
 }: Readonly<ITextInputComponentProps>) => {
   return (
     <>

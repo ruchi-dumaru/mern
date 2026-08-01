@@ -33,7 +33,7 @@ export default function ActivatePage() {
 
   const {loggedInUser}=useAuth()
   useEffect(()=>{
-    if(loggedInUser){
+    if(loggedInUser && Object.entries(loggedInUser).length!==0){
       notifySuccess({title:"You are already logged in..."})
  navigate("/"+loggedInUser.role)
     }

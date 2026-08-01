@@ -1,16 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router";
 import { ChevronDownIcon, MenuIcon, SearchIcon, UserIcon } from "../../assets/icons";
 import { SidebarComponent } from "../../components/sidebar/SidebarComponent";
 import useAuth from "../../hooks/auth.hook";
+import { useNavigate } from "react-router";
 
 const AdminLayoutPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const navigate=useNavigate()
 
   const toggleSidebar = () => setCollapsed((prev) => !prev);
 
   const {loggedInUser}=useAuth()
+
+  useEffect (()=>{
+    
+    if(Object.entries(loggedInUser).length===0){
+      console.log(loggedInUser)
+      navigate('/')
+    }
+  },[])
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
@@ -66,7 +76,7 @@ const AdminLayoutPage = () => {
           </header>
 
           <div className="p-4 sm:p-6 lg:p-8">
-            <Outlet />
+            <Outlet context={{setCollapsed}} />
           </div>
         </main>
       </div>
