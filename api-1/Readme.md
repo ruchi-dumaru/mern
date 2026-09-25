@@ -119,7 +119,7 @@ note: data send by client is received by three way:form-data,raw,urlencoded
 
 ## DataBase
  - SQL database
-  - (mysql,maeiadb,postgres,mssql,oracle)
+  - (mysql,mariadb,postgres,mysql,oracle)
 
  - NoSQL database(Not only SQL)
   - (MongoDB,cassandra,couchdb,auzre,(server)) 
@@ -235,3 +235,11 @@ Lubricants
   status:"active",
   ....
 }
+
+
+- do import cors in express.js to integrate frontend and backend
+ `app.use(cors({
+  origin:"http://localhost:5173"
+}));
+ `
+ `pnpm install cors`

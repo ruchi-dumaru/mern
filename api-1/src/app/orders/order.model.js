@@ -4,9 +4,9 @@ const { OrderStatus } = require("../../config/constant.config");
 const OrderSchema = new mongoose.Schema(
   {
     orderCode: {
-      type:String,
-      required:true,
-      unique:true
+      type: String,
+      required: true,
+      unique: true,
     },
     buyer: {
       type: mongoose.Types.ObjectId,
@@ -21,15 +21,15 @@ const OrderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    serviceCharge:Number,
-    deliveryCharge:Number,
-    
+    serviceCharge: Number,
+    deliveryCharge: Number,
+
     total: {
       type: Number,
       required: true,
     },
-    isPaid:Boolean,
-    staus: {
+    isPaid: Boolean,
+    status: {
       type: String,
       enum: Object.values(OrderStatus),
       default: OrderStatus.PENDING,

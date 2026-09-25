@@ -80,12 +80,12 @@ class OrderDetailService {
     }
   }
 
-  async getAllRowsByFilter(filter,config={page:1,limit:20}){
+  async getAllRowsByFilter(filter, config = { page: 1, limit: 20 }) {
     //{data,pagination,{page:n,l:n,total:n}}
-    try{
-      const skip=(config.page-1)*config.limit
-      const data =await OrderDetailModel.find(filter)
-      .populate("order", [
+    try {
+      const skip = (config.page - 1) * config.limit;
+      const data = await OrderDetailModel.find(filter)
+        .populate("order", [
           "_id",
           "orderCode",
           "subtotal",
@@ -155,23 +155,22 @@ class OrderDetailService {
           "image",
           "role",
         ])
-        .sort({createdAt:"desc"})
+        .sort({ createdAt: "desc" })
         .limit(config.limit)
         .skip(skip);
 
-        const count=await OrderDetailModel.countDocuments(filter)
+      const count = await OrderDetailModel.countDocuments(filter);
 
-        return {
-          data:data,
-          pagination:{
-            page:config.page,
-            limit:config.limit,
-            total:count
-          }
-        }
-
-    }catch(exception){
-      throw exception
+      return {
+        data: data,
+        pagination: {
+          page: config.page,
+          limit: config.limit,
+          total: count,
+        },
+      };
+    } catch (exception) {
+      throw exception;
     }
   }
   async addToCart(data) {
@@ -184,25 +183,21 @@ class OrderDetailService {
     }
   }
 
-   async removeFromCart(filter) {
+  async removeFromCart(filter) {
     try {
       return await OrderDetailModel.findOneAndDelete(filter);
-      
     } catch (exception) {
       throw exception;
     }
   }
 
-  async updateOrderDetailsByFilter(data,filter){
-    try{
-return await OrderDetailModel.updateMany(filter,{$set:data})
-    }catch(exception){
-      throw exception
+  async updateOrderDetailsByFilter(data, filter) {
+    try {
+      return await OrderDetailModel.updateMany(filter, { $set: data });
+    } catch (exception) {
+      throw exception;
     }
   }
-
-
-
 }
 
 module.exports = new OrderDetailService();

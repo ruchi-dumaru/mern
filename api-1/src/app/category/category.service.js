@@ -39,15 +39,18 @@ class CategoryService {
           req.file.path,
           "categories",
         );
+      } else {
+        data.icon = category.icon;
       }
-      data.icon = category.icon;
+
+      data.slug = slugify(data.name, { lower: true, remove: /[*+~.()'"!:@]/g });
 
       if (!data.parentId || data.parentId === "" || data.parentId == "null") {
         data.parentId = null;
       }
 
       if (!data.brands || data.brands === "" || data.brands == "null") {
-        data.brands = null;
+        data.brands = category.brands;
       }
 
       data.updatedBy = req.loggedInUser._id;
@@ -71,8 +74,15 @@ class CategoryService {
       let skip = (pagination.page - 1) * pagination.limit;
 
       const data = await CategoryModel.find(filter)
-      .populate('parentId',['_id','name','slug','icon','brands','status'])
-      .populate('brands',['_id','name','slug','icon','brands','status'])
+        .populate("parentId", [
+          "_id",
+          "name",
+          "slug",
+          "icon",
+          "brands",
+          "status",
+        ])
+        .populate("brands", ["_id", "name", "slug", "icon", "brands", "status"])
         .populate("createdBy", [
           "_id",
           "name",
@@ -118,8 +128,15 @@ class CategoryService {
   async getSingleRowByFilter(filter) {
     try {
       const data = await CategoryModel.findOne(filter)
-      .populate('parentId',['_id','name','slug','icon','brands','status'])
-      .populate('brands',['_id','name','slug','icon','brands','status'])
+        .populate("parentId", [
+          "_id",
+          "name",
+          "slug",
+          "icon",
+          "brands",
+          "status",
+        ])
+        .populate("brands", ["_id", "name", "slug", "icon", "brands", "status"])
         .populate("createdBy", [
           "_id",
           "name",

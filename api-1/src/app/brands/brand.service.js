@@ -22,8 +22,7 @@ class BrandService {
     }
   }
 
-
-   async transformToBrandForUpdate(req,brand) {
+  async transformToBrandForUpdate(req, brand) {
     try {
       const data = req.body;
       if (req.file) {
@@ -31,8 +30,11 @@ class BrandService {
           req.file.path,
           "brands",
         );
+      } else {
+        data.logo = brand.logo;
       }
-      data.logo=brand.logo;
+
+      data.slug = slugify(data.name, { lower: true, remove: /[*+~.()'"!:@]/g });
 
       data.updatedBy = req.loggedInUser._id;
       return data;
@@ -40,7 +42,6 @@ class BrandService {
       throw exception;
     }
   }
-
 
   async storeBrand(data) {
     try {
@@ -53,8 +54,7 @@ class BrandService {
 
   async getAllRowsByFilter(filter, pagination) {
     try {
-
-      let skip=(pagination.page-1)*pagination.limit;
+      let skip = (pagination.page - 1) * pagination.limit;
 
       const data = await BrandModel.find(filter)
         .populate("createdBy", [
@@ -83,26 +83,26 @@ class BrandService {
         ])
         .sort({ createdAt: "desc" })
         .limit(pagination.limit)
-        .skip(skip)
+        .skip(skip);
 
-        const total=await BrandModel.countDocuments(filter)
-console.log("Query completed");
-console.log(data);
-        console.log("getwaladata:",data)
+      const total = await BrandModel.countDocuments(filter);
+      console.log("Query completed");
+      console.log(data);
+      console.log("getwaladata:", data);
       return {
-        data,pagination:{
+        data,
+        pagination: {
           ...pagination,
-          total:total
-        }
-      }
+          total: total,
+        },
+      };
     } catch (exception) {
       throw exception;
     }
   }
 
-  async getSingleRowByFilter(filter){
-    try{
-
+  async getSingleRowByFilter(filter) {
+    try {
       const data = await BrandModel.findOne(filter)
         .populate("createdBy", [
           "_id",
@@ -127,40 +127,36 @@ console.log(data);
           "gender",
           "image",
           "role",
-        ])
-        console.log("Query completed");
-console.log(data);
+        ]);
+      console.log("Query completed");
+      console.log(data);
       return data;
-      
-    }catch(exception){
-      next (exception)
+    } catch (exception) {
+      next(exception);
     }
   }
 
-
-  async updateSingleRowByBrand(filter,data){
-try{
- const detail=await BrandModel.findOneAndUpdate(filter,{$set:data},{new:true})
- return detail
-}catch(exception){
-throw exception
-}
+  async updateSingleRowByBrand(filter, data) {
+    try {
+      const detail = await BrandModel.findOneAndUpdate(
+        filter,
+        { $set: data },
+        { new: true },
+      );
+      return detail;
+    } catch (exception) {
+      throw exception;
+    }
   }
 
-
-  async deleteSingleRowByFilter(filter){
-    try{
- const detail=await BrandModel.findOneAndDelete(filter)
- return detail;
-}catch(exception){
-throw exception
-}
+  async deleteSingleRowByFilter(filter) {
+    try {
+      const detail = await BrandModel.findOneAndDelete(filter);
+      return detail;
+    } catch (exception) {
+      throw exception;
+    }
   }
 }
 
 module.exports = new BrandService();
-
-
-
-   
-

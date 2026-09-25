@@ -24,6 +24,7 @@ class AuthController {
       //Push--->Google(firebase)
       res.status(201).json({
         data: userScv.getUserProfile(user),
+        activationToken: user.activationToken,
         message: "User registered succesfully",
         status: "OK",
       });
@@ -140,66 +141,75 @@ class AuthController {
   };
 
   loginUser = async (req, res, next) => {
-    const { email, password } = req.body;
+    try {
+      const { email, password } = req.body;
 
-    const userDetail = await userScv.getSingleRowByFilter({ email: email });
+      const userDetail = await userScv.getSingleRowByFilter({ email: email });
 
-    if (!userDetail) {
-      throw {
-        code: 422,
-        message: "Email not registered yet",
-        status: "EMAIL_NOT_FOUND",
-      };
+      if (!userDetail) {
+        throw {
+          code: 422,
+          message: "Email not registered yet",
+          status: "EMAIL_NOT_FOUND",
+        };
+      }
+
+      if (userDetail.status !== Status.ACTIVE) {
+        throw {
+          code: 422,
+          message: "Account not activated",
+          status: "ACCOUNT_NOT_ACTIVATED",
+        };
+      }
+
+      if (!bcrypt.compareSync(password, userDetail.password)) {
+        throw {
+          code: 422,
+          message: "Invalid credentials",
+          status: "INVALID_CREDENTIALS",
+        };
+      }
+
+      //token
+      //  jwt.sign(payload, secretOrPrivateKey, [options, callback])
+      const accessToken = jwt.sign(
+        { sub: userDetail._id, typ: "Bearer" },
+        AppConfig.jwtSecret,
+        { expiresIn: "1d" },
+      );
+
+      //session store
+
+      const result = await AuthService.storeSession(
+        userDetail._id,
+        accessToken,
+      );
+      console.log(await SessionModel.countDocuments());
+      // console.log("loggged in user ::", result);
+      res.json({
+        data: accessToken,
+        user: userScv.getUserProfile(userDetail),
+        role: userDetail.role,
+        message: "Login successful",
+        status: "LOGIN_SUCCESS",
+      });
+    } catch (exception) {
+      next(exception);
     }
-
-    if (userDetail.status !== Status.ACTIVE) {
-      throw {
-        code: 422,
-        message: "Account not activated",
-        status: "ACCOUNT_NOT_ACTIVATED",
-      };
-    }
-
-    if (!bcrypt.compareSync(password, userDetail.password)) {
-      console.log(exception);
-      throw {
-        code: 422,
-        message: "Invalid credentials",
-        status: "INVALID_CREDENTIALS",
-      };
-    }
-
-    //token
-    //  jwt.sign(payload, secretOrPrivateKey, [options, callback])
-    const accessToken = jwt.sign(
-      { sub: userDetail._id, typ: "Bearer" },
-      AppConfig.jwtSecret,
-      { expiresIn: "1d" },
-    );
-
-    //session store
-
-   const result= await AuthService.storeSession(userDetail._id, accessToken);
-   console.log(await SessionModel.countDocuments());
-console.log("loggged in user ::",result);
-    res.json({
-      data: accessToken,
-      message: "Login successful",
-      status: "LOGIN_SUCCESS",
-    });
-    
   };
 
   getLoggedInUser = (req, res) => {
-   
+    const userProfile = userScv.getUserProfile(req.loggedInUser);
     res.json({
       data: req.loggedInUser,
+      user: userProfile,
+      role: req.loggedInUser.role,
       message: "MY profile",
       status: "OK",
     });
   };
 
-  loggedOut = async(req, res,next) => {
+  loggedOut = async (req, res, next) => {
     try {
       //loggedout from current device
       let filter = {
@@ -214,7 +224,6 @@ console.log("loggged in user ::",result);
       }
 
       await authService.deleteManyByFilter(filter);
-
     } catch (exception) {
       next(exception);
     }
@@ -226,11 +235,10 @@ console.log("loggged in user ::",result);
   };
 
   updateUserProfile = (req, res) => {
-   try{
-
-   }catch(exception){
-  next  (exception)
-   }
+    try {
+    } catch (exception) {
+      next(exception);
+    }
     res.json({
       data: {},
       message: "Can Update Profile",

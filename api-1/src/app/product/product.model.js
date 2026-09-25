@@ -19,7 +19,7 @@ const ProductSchema = new mongoose.Schema(
     category: [
       {
         type: mongoose.Types.ObjectId,
-        ref: "Product",
+        ref: "Category",
         default: null,
       },
     ],
@@ -30,11 +30,13 @@ const ProductSchema = new mongoose.Schema(
       unique: true,
     },
     isFeatured: Boolean,
-    images:[{
-      id: String,
-      optimizedUrl: String,
-      originalUrl: String,
-    }] ,
+    images: [
+      {
+        id: String,
+        optimizedUrl: String,
+        originalUrl: String,
+      },
+    ],
 
     brand: {
       type: mongoose.Types.ObjectId,
@@ -57,10 +59,10 @@ const ProductSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    seller:{
-      type:mongoose.Types.ObjectId,
-      ref:"User",
-required:true
+    seller: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     createdBy: {
       type: mongoose.Types.ObjectId,

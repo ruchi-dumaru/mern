@@ -5,6 +5,7 @@
 	"dependencies": {
 		"bcryptjs": "^3.0.3",
 		"cloudinary": "^2.10.0",
+		"cors": "^2.8.6",
 		"dotenv": "^17.4.2",
 		"express": "^5.2.1",
 		"joi": "^18.1.2",
@@ -12,7 +13,8 @@
 		"mongoose": "^9.4.1",
 		"multer": "^2.2.0",
 		"nodemailer": "^9.0.1",
-		"slugify": "^1.6.9"
+		"slugify": "^1.6.9",
+		"socket.io": "^4.8.3"
 	},
 	"name": "api-1",
 	"version": "1.0.0",

@@ -9,7 +9,7 @@ class AuthService {
         device: "web",
         data: JSON.stringify({}),
       });
-      console.log("sessionObj:",sessionObj)
+      // console.log("sessionObj:",sessionObj)
       return await sessionObj.save();
     } catch (exception) {
       throw exception;

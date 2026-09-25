@@ -8,6 +8,7 @@ const productRouter=require("../app/product/product.router");
 const userRouter = require("../app/user/user.router");
 const OrderDetailRouter = require("../app/order-details/order-details.router");
 const orderRouter = require("../app/orders/order.router");
+const chatRouter = require("../app/chat/chat.router");
 
 //app
 //endpoint/url/req/routing/url
@@ -22,5 +23,6 @@ router.use("/front", frontRouter);
 router.use('/user',userRouter);
 router.use('/order-detail',OrderDetailRouter);
 router.use("/order",orderRouter);
+router.use('/chat',chatRouter)
 module.exports = router;
 

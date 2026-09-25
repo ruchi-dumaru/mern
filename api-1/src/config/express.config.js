@@ -1,16 +1,23 @@
 const express = require("express");
 const {dbConncetion}=require("./db.config")
 const router=require("./router.config");
-const errorHandler=require('../middleware/error-handling.middleware')
+const errorHandler=require('../middleware/error-handling.middleware');
+const { truncates } = require("bcryptjs");
 const app = express();
+const cors=require("cors")
 
 //middleware for receuving data
 //parser
 //json
 
 
-//mongodb connection
-dbConncetion()
+
+//corsallow
+app.use(cors({
+  origin:"http://localhost:5173"
+}));
+
+
 
 
 app.use(express.json({
@@ -32,6 +39,8 @@ app.use((req,res,next)=>{
  next({code:404,message:"Not found",status:"NOT_FOUND_ERR"})
 })
 
+//mongodb connection
+dbConncetion()
 
 //error handling middleware
 app.use(errorHandler)
