@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router";
-import { ChevronDownIcon, MenuIcon, SearchIcon, UserIcon } from "../../assets/icons";
+import {
+  ChevronDownIcon,
+  MenuIcon,
+  SearchIcon,
+  UserIcon,
+} from "../../assets/icons";
 import { SidebarComponent } from "../../components/sidebar/SidebarComponent";
 import useAuth from "../../hooks/auth.hook";
 import { useNavigate } from "react-router";
@@ -8,19 +13,18 @@ import { useNavigate } from "react-router";
 const AdminLayoutPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const toggleSidebar = () => setCollapsed((prev) => !prev);
 
-  const {loggedInUser}=useAuth()
+  const { loggedInUser, logout } = useAuth();
 
-  useEffect (()=>{
-    
-    if(Object.entries(loggedInUser).length===0){
-      console.log(loggedInUser)
-      navigate('/')
-    }
-  },[])
+  useEffect(() => {
+    if (!loggedInUser?._id || loggedInUser.role !== "admin")
+      navigate("/", { replace: true });
+  }, [loggedInUser, navigate]);
+
+  if (!loggedInUser?._id || loggedInUser.role !== "admin") return null;
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
@@ -51,22 +55,43 @@ const AdminLayoutPage = () => {
                   onClick={() => setProfileOpen((prev) => !prev)}
                   className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-2 py-2"
                 >
-                 <UserIcon/>
+                  <UserIcon />
                   <div className="hidden text-left sm:block">
-                    <p className="text-sm font-semibold">{loggedInUser?.name}</p>
+                    <p className="text-sm font-semibold">
+                      {loggedInUser?.name}
+                    </p>
                   </div>
                   <ChevronDownIcon />
                 </button>
 
                 {profileOpen && (
                   <div className="absolute right-0 mt-2 w-48 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
-                    <button className="flex w-full rounded-xl px-3 py-2 text-left text-sm hover:bg-slate-100">
+                    <button
+                      onClick={() => {
+                        setProfileOpen(false);
+                        navigate("/admin/profile");
+                      }}
+                      className="flex w-full rounded-xl px-3 py-2 text-left text-sm hover:bg-slate-100"
+                    >
                       My Profile
                     </button>
-                    <button className="flex w-full rounded-xl px-3 py-2 text-left text-sm hover:bg-slate-100">
+                    <button
+                      onClick={() => {
+                        setProfileOpen(false);
+                        navigate("/admin/change-password");
+                      }}
+                      className="flex w-full rounded-xl px-3 py-2 text-left text-sm hover:bg-slate-100"
+                    >
                       Change Password
                     </button>
-                    <button className="flex w-full rounded-xl px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50">
+                    <button
+                      onClick={() =>
+                        void logout().then(() =>
+                          navigate("/", { replace: true }),
+                        )
+                      }
+                      className="flex w-full rounded-xl px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50"
+                    >
                       Logout
                     </button>
                   </div>
@@ -76,7 +101,7 @@ const AdminLayoutPage = () => {
           </header>
 
           <div className="p-4 sm:p-6 lg:p-8">
-            <Outlet context={{setCollapsed}} />
+            <Outlet context={{ setCollapsed }} />
           </div>
         </main>
       </div>

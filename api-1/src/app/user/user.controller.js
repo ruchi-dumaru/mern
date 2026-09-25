@@ -1,25 +1,24 @@
-const { Status } = require("../../config/constant.config");
+const { Status, userRoles } = require("../../config/constant.config");
 const userService = require("./user.service");
 const userModel = require("./user.model");
 const userScv = require("./user.service");
 class UserController {
- 
-
   async listAllUsers(req, res, next) {
     try {
       //active inactive both status search
       let filter = {
-        _id:{$ne: req.loggedInUser._id}
+        _id: { $ne: req.loggedInUser._id },
       };
 
       if (req.query.search) {
         filter = {
           ...filter,
-          $or:[{name: new RegExp(req.query.search, "i")},
-          {email: new RegExp(req.query.search, "i")},
-         {phone: new RegExp(req.query.search, "i")},
-         {address: new RegExp(req.query.search, "i")},
-        ],
+          $or: [
+            { name: new RegExp(req.query.search, "i") },
+            { email: new RegExp(req.query.search, "i") },
+            { phone: new RegExp(req.query.search, "i") },
+            { address: new RegExp(req.query.search, "i") },
+          ],
         };
       }
 
@@ -30,22 +29,19 @@ class UserController {
         };
       }
 
-
-      if (req.query.role){
-        filter={
+      if (req.query.role) {
+        filter = {
           ...filter,
-          status:req.query.role
-        }
+          role: req.query.role,
+        };
       }
 
-      
-      if (req.query.gender){
-        filter={
+      if (req.query.gender) {
+        filter = {
           ...filter,
-          status:req.query.gender
-        }
+          gender: req.query.gender,
+        };
       }
-
 
       //pagination
       const page = +req.query.page || 1;
@@ -67,7 +63,6 @@ class UserController {
     }
   }
 
- 
   async viewUserDetailById(req, res, next) {
     try {
       const id = req.params.id;
@@ -155,8 +150,12 @@ class UserController {
         throw { code: 404, message: "User not found", status: "NOT_FOUND" };
       }
 
-      if(detail.role=== UserRole.ADMIN){
-        throw {code:403,message:"Admin cannot be deleted",status:"PERMISSION_DENIED"}
+      if (detail.role === userRoles.Admin) {
+        throw {
+          code: 403,
+          message: "Admin cannot be deleted",
+          status: "PERMISSION_DENIED",
+        };
       }
       await userService.deleteSingleRowByFilter({ _id: id });
       res.json({
@@ -168,8 +167,6 @@ class UserController {
       next(exception);
     }
   }
-
-  
 }
 const userCtrl = new UserController();
 

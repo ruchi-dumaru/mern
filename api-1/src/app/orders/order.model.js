@@ -29,6 +29,12 @@ const OrderSchema = new mongoose.Schema(
       required: true,
     },
     isPaid: Boolean,
+    paymentPidx: { type: String, default: null, unique: true, sparse: true },
+    paymentStatus: { type: String, default: null },
+    paymentTransactionId: { type: String, default: null },
+    paymentAmount: { type: Number, default: null },
+    paymentMethod: { type: String, default: null },
+    paymentCompletedAt: { type: Date, default: null },
     status: {
       type: String,
       enum: Object.values(OrderStatus),
@@ -44,6 +50,7 @@ const OrderSchema = new mongoose.Schema(
       ref: "User",
       default: null,
     },
+    orderDetailIds: [{ type: mongoose.Types.ObjectId, ref: "OrderDetail" }],
   },
   {
     autoCreate: true,

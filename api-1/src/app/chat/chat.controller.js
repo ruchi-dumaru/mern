@@ -47,23 +47,25 @@ class ChatController {
     }
   }
 
-  async getChatList (req,res,next){
-    try{
-const loggedInUser=req.loggedInUser;
-const user=req.params.receiver;
+  async getChatList(req, res, next) {
+    try {
+      const loggedInUser = req.loggedInUser;
+      const user = req.params.receiver;
 
-let filter={
-  $or:[
-    {
-      sender:loggedInUser._id,receiver:user
-    },
-    {
-      sender:user._id,receiver:loggedInUser
-    }
-  ]
-}
-const chatList =await ChatModel.find(filter)
-.populate("sender", [
+      let filter = {
+        $or: [
+          {
+            sender: loggedInUser._id,
+            receiver: user,
+          },
+          {
+            sender: user,
+            receiver: loggedInUser._id,
+          },
+        ],
+      };
+      const chatList = await ChatModel.find(filter)
+        .populate("sender", [
           "_id",
           "name",
           "email",
@@ -89,17 +91,15 @@ const chatList =await ChatModel.find(filter)
           "role",
         ]);
 
-         res.json({
+      res.json({
         data: chatList,
         message: "Chat message",
         status: "CHAT_LIST",
       });
-
-    }catch(exception){
-      next(exception)
+    } catch (exception) {
+      next(exception);
     }
   }
 }
-
 
 module.exports = new ChatController();

@@ -14,7 +14,14 @@ import ProductCreatePage from "../product/ProductCreatePage";
 import ProductEditPage from "../product/ProductEditPage";
 import OrderListPage from "./order/OrderListPage";
 import OrderDetailsPage from "./order/OrderDetailsPage";
+import UserListPage from "./user/UserListPage";
+import UserDetailsPage from "./user/UserDetailsPage";
+import UserEditPage from "./user/UserEditPage";
+import UserCreatePage from "./user/UserCreatePage";
+import TransactionListPage from "./transaction/TransactionListPage";
 import ChatPage from "../chat/ChatPage";
+import MyProfilePage from "./profile/MyProfilePage";
+import ChangePasswordPage from "./profile/ChangePasswordPage";
 export const AdminRouter = [
   {
     path: "/admin",
@@ -76,6 +83,34 @@ export const AdminRouter = [
       {
         path: "orders/:id",
         Component: OrderDetailsPage,
+      },
+      {
+        path: "users",
+        Component: UserListPage,
+      },
+      {
+        path: "users/:id",
+        Component: UserDetailsPage,
+      },
+      {
+        path: "user/:id/edit",
+        Component: UserEditPage,
+      },
+      {
+        path: "user/create",
+        Component: UserCreatePage,
+      },
+      {
+        path: "transactions",
+        Component: TransactionListPage,
+      },
+      {
+        path: "profile",
+        Component: MyProfilePage,
+      },
+      {
+        path: "change-password",
+        Component: ChangePasswordPage,
       },
       { path: "chat", Component: ChatPage },
     ],

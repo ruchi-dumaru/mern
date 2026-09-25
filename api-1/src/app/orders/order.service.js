@@ -54,6 +54,8 @@ class OrderService {
       pricingDetail.deliveryCharge +
       pricingDetail.tax;
 
+    pricingDetail.total = Math.round(pricingDetail.total);
+
     return pricingDetail;
   }
 
@@ -63,6 +65,7 @@ class OrderService {
       let order = {
         orderCode: await this.getNewOrderCode(),
         buyer: buyerId,
+        orderDetailIds: cart.map((orderDetail) => orderDetail._id),
         ...pricing,
         isPaid: false,
         status: OrderStatus.PENDING,
@@ -88,7 +91,7 @@ class OrderService {
     try {
       //implement pagination
       const data = await OrderModel.find(filter)
-       .populate("buyer", [
+        .populate("buyer", [
           "_id",
           "name",
           "email",
@@ -100,37 +103,53 @@ class OrderService {
           "image",
           "role",
         ])
-        .sort({ createdAt: "desc" })
-    
+        .sort({ createdAt: "desc" });
+
       return data;
     } catch (exception) {
       throw exception;
     }
   }
 
- async getSingleRowByFilter (filter){
-    try{
- const data = await OrderModel.findOne(filter)
-       .populate("buyer", [
-          "_id",
-          "name",
-          "email",
-          "address",
-          "phone",
-          "dob",
-          "status",
-          "gender",
-          "image",
-          "role",
-        ])
-         console.log(data)
+  async getSingleRowByFilter(filter) {
+    try {
+      const data = await OrderModel.findOne(filter).populate("buyer", [
+        "_id",
+        "name",
+        "email",
+        "address",
+        "phone",
+        "dob",
+        "status",
+        "gender",
+        "image",
+        "role",
+      ]);
+      console.log(data);
       return data;
-   
-    }catch(exception){
-      throw exception
+    } catch (exception) {
+      throw exception;
     }
   }
 
+  async markKhaltiPaymentPaid(orderId, pidx, payment) {
+    return OrderModel.findOneAndUpdate(
+      { _id: orderId, isPaid: { $ne: true }, paymentPidx: { $ne: pidx } },
+      {
+        $set: {
+          isPaid: true,
+          status: OrderStatus.VERIFIED,
+          paymentPidx: pidx,
+          paymentStatus: payment.status,
+          paymentTransactionId: payment.transaction_id || null,
+          paymentAmount: payment.total_amount,
+          paymentMethod: "khalti",
+          paymentCompletedAt: new Date(),
+        },
+      },
+      { new: true },
+    );
+  }
 }
 
 module.exports = new OrderService();

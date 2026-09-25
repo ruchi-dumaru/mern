@@ -32,22 +32,25 @@ const EmailConfig = {
   },
 };
 
-
-const AppConfig={
+const AppConfig = {
   frontendUrl: process.env.FRONTEND_URL,
-  jwtSecret:process.env.JWT_SECRET,
+  jwtSecret: process.env.JWT_SECRET,
 
-
-  khaltiSecretKey:process.env.KHALTI_SECRET_KEY,
-  khaltiBaseUrl :process.env.KHALTI_BASE_URL
-}
+  khaltiSecretKey: process.env.KHALTI_SECRET_KEY,
+  khaltiBaseUrl:
+    (
+      process.env.KHALTI_BASE_URL ||
+      process.env.KHALTI_GATEWAY_URL ||
+      ""
+    ).replace(/\/$/, "") + "/",
+};
 
 module.exports = {
   DBConfig,
   CloudinaryConfig,
   SmtpConfig,
   EmailConfig,
-  AppConfig
+  AppConfig,
 };
 
 // we have taken excess of config such that we don't need to import dotenv pkg in multiple pg
