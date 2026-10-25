@@ -3,7 +3,8 @@ const MailService = require("../../service/mail.service");
 
 class AuthMailService extends MailService {
   activateUserAccount(user) {
-    let activationLink=AppConfig.frontendUrl+"/activate/"+user.activationToken
+    let activationLink =
+      AppConfig.frontendUrl + "/activate/" + encodeURIComponent(user.activationToken);
     try {
         console.log('activation:'+user)
       return this.sendMail({
@@ -408,7 +409,10 @@ border:1px solid #e5e7eb;
     }
 }
 async resendTokenActivation(userDetail){
-   let activationLink=AppConfig.frontendUrl+"/activate/"+userDetail.activationToken
+   let activationLink =
+     AppConfig.frontendUrl +
+     "/activate/" +
+     encodeURIComponent(userDetail.activationToken);
     try {
      console.log("helooo"+userDetail)
       return await this.sendMail({

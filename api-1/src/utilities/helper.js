@@ -1,5 +1,6 @@
 //generate random number as activation token
 const fs = require("fs");
+const crypto = require("crypto");
 
 
 const generateRandomString = (length = 100) => {
@@ -14,6 +15,10 @@ const generateRandomString = (length = 100) => {
     random += chars[posn];
   }
   return random;
+};
+
+const generateActivationToken = (bytes = 75) => {
+  return crypto.randomBytes(bytes).toString("base64url");
 };
 
 const fileDelete = (filepath) => {
@@ -31,6 +36,7 @@ return new Date(newDate)
 
 module.exports = {
   generateRandomString,
+  generateActivationToken,
   fileDelete,
   dateCreate
 };

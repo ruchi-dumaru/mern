@@ -1,6 +1,9 @@
 const bcrypt = require("bcryptjs");
 const { Status } = require("../../config/constant.config");
-const { generateRandomString, dateCreate } = require("../../utilities/helper");
+const {
+  generateActivationToken,
+  dateCreate,
+} = require("../../utilities/helper");
 const userModel = require("./user.model");
 const cloudinarySvc = require("../../service/cloudinary.service");
 
@@ -30,7 +33,7 @@ class userService {
 
       data.status = Status.INACTIVE;
 
-      data.activationToken = generateRandomString();
+      data.activationToken = generateActivationToken();
 
       data.expiry = dateCreate(new Date(), 1);
 

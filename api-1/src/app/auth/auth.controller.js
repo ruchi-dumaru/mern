@@ -3,7 +3,10 @@
 
 const { AppConfig } = require("../../config/config");
 const { Status } = require("../../config/constant.config");
-const { generateRandomString, dateCreate } = require("../../utilities/helper");
+const {
+  generateActivationToken,
+  dateCreate,
+} = require("../../utilities/helper");
 const userScv = require("../user/user.service");
 const authMailSvc = require("./auth.mail");
 const bcrypt = require("bcryptjs");
@@ -18,7 +21,9 @@ class AuthController {
       const data = await userScv.transformDataToUser(req);
       const user = await userScv.storeUser(data);
 
-      await authMailSvc.activateUserAccount(user);
+      // Temporarily bypass SMTP activation email during API testing.
+      // Restore this call when email activation is ready to be enabled.
+      // await authMailSvc.activateUserAccount(user);
       //smpt-->Gmail
       //SMS-->GSM
       //Push--->Google(firebase)
@@ -35,9 +40,17 @@ class AuthController {
 
   activateUser = async (req, res, next) => {
     try {
-      const token = req.params.token;
+      const tokenParam = req.params.token;
+      const token = Array.isArray(tokenParam)
+        ? tokenParam.join("/")
+        : tokenParam;
+      const normalizedToken = token.trim();
+      console.log("TOKEN FROM URL:", tokenParam);
+      console.log("TOKEN USED FOR DB QUERY:", normalizedToken);
+      console.log("TOKEN FROM URL JSON:", JSON.stringify(tokenParam));
+      console.log("TOKEN USED FOR DB QUERY LENGTH:", normalizedToken.length);
       let userDetail = await userScv.getSingleRowByFilter({
-        activationToken: token,
+        activationToken: normalizedToken,
       });
 
       if (!userDetail) {
@@ -116,7 +129,7 @@ class AuthController {
       //if token not expired user is activated
 
       const updateData = {
-        activationToken: generateRandomString(),
+        activationToken: generateActivationToken(),
         expiry: dateCreate(new Date(), 1),
       };
 

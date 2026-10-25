@@ -16,7 +16,7 @@ authRouter.post(
   authCtrl.registerUser,
 );
 
-authRouter.get("/activate/:token", authCtrl.activateUser);
+authRouter.get("/activate/*token", authCtrl.activateUser);
 authRouter.get("/resend-token/:token", authCtrl.resendToken);
 
 authRouter.post("/login", bodyValidator(loginDTO), authCtrl.loginUser);
